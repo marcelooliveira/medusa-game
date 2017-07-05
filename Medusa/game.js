@@ -6,10 +6,12 @@ var cursors;
 function preload() {
     // Load starfield image
     game.load.image('starfield', 'assets/backgrounds/level01.jpg');
-    game.load.atlasJSONHash('bot', 'assets/sprites/player.png', 'assets/sprites/player.json');
+    game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
+    game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
 }
 
-var s;
+var playerSprite;
+var bossSprite;
 
 function create() {
 
@@ -27,12 +29,19 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     game.debug.text('Press down arrow keys to move the tileSprite', 20, 20);
 
-    s = game.add.sprite(game.world.centerX, game.world.centerY, 'bot');
-    s.anchor.setTo(0.5, 0.5);
-    //s.scale.setTo(2, 2);
+    playerSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+    playerSprite.anchor.setTo(0.5, 0.5);
+    //playerSprite.scale.setTo(2, 2);
 
-    s.animations.add('run');
-    s.animations.play('run', 10, true);
+    playerSprite.animations.add('run');
+    playerSprite.animations.play('run', 7.5, true);
+
+    bossSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'boss');
+    bossSprite.anchor.setTo(0.75, 3.5);
+    //playerSprite.scale.setTo(2, 2);
+
+    bossSprite.animations.add('run');
+    bossSprite.animations.play('run', 3, true);
 }
 
 function update() {
@@ -53,16 +62,16 @@ function update() {
     //}
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-        s.x -= 4;
+        playerSprite.x -= 4;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-        s.x += 4;
+        playerSprite.x += 4;
     }
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-        s.y -= 4;
+        playerSprite.y -= 4;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-        s.y += 4;
+        playerSprite.y += 4;
     }
 }
