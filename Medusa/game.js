@@ -6,7 +6,10 @@ var cursors;
 function preload() {
     // Load starfield image
     game.load.image('starfield', 'assets/backgrounds/level01.jpg');
+    game.load.atlasJSONHash('bot', 'assets/sprites/player.png', 'assets/sprites/player.json');
 }
+
+var s;
 
 function create() {
 
@@ -23,6 +26,13 @@ function create() {
 
     cursors = game.input.keyboard.createCursorKeys();
     game.debug.text('Press down arrow keys to move the tileSprite', 20, 20);
+
+    s = game.add.sprite(game.world.centerX, game.world.centerY, 'bot');
+    s.anchor.setTo(0.5, 0.5);
+    //s.scale.setTo(2, 2);
+
+    s.animations.add('run');
+    s.animations.play('run', 10, true);
 }
 
 function update() {
@@ -35,11 +45,24 @@ function update() {
     //    tileSprite.tilePosition.x -= 8;
     //}
 
-    if (cursors.up.isDown) {
-        tileSprite.tilePosition.y += 8;
+    //if (cursors.up.isDown) {
+    //    tileSprite.tilePosition.y += 8;
+    //}
+    //else if (cursors.down.isDown) {
+    //    tileSprite.tilePosition.y -= 8;
+    //}
+
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+        s.x -= 4;
     }
-    else if (cursors.down.isDown) {
-        tileSprite.tilePosition.y -= 8;
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+        s.x += 4;
     }
 
+    if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+        s.y -= 4;
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+        s.y += 4;
+    }
 }
