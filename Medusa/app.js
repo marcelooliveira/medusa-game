@@ -1,17 +1,37 @@
-var SimpleGame = (function () {
-    function SimpleGame() {
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
-    }
-    SimpleGame.prototype.preload = function () {
-        this.game.load.image('logo', 'phaser2.png');
-    };
-    SimpleGame.prototype.create = function () {
-        var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
-        logo.anchor.setTo(0.5, 0.5);
-    };
-    return SimpleGame;
-}());
-window.onload = function () {
-    var game = new SimpleGame();
-};
+//var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
+//var tilesprite;
+//var cursors;
+//function preload() {
+//    // Load starfield image
+//    game.load.image('starfield', 'assets/misc/starfield.jpg');
+//}
+//function create() {
+//    /**
+//    * 
+//    *  A TileSprite is a Sprite that has a repeating texture. 
+//    *  The texture can be scrolled and scaled independently of the TileSprite itself.
+//    *  Textures will automatically wrap and are designed so that you can create game
+//    *  backdrops using seamless textures as a source.
+//    *
+//    **/
+//    // Create a tilesprite (x, y, width, height, key)
+//    tileSprite = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+//    cursors = game.input.keyboard.createCursorKeys();
+//    game.debug.text('Press down arrow keys to move the tileSprite', 20, 20);
+//}
+//function update() {
+//    // Move tilesprite position by pressing arrow keys
+//    if (cursors.left.isDown) {
+//        tileSprite.tilePosition.x += 8;
+//    }
+//    else if (cursors.right.isDown) {
+//        tileSprite.tilePosition.x -= 8;
+//    }
+//    if (cursors.up.isDown) {
+//        tileSprite.tilePosition.y += 8;
+//    }
+//    else if (cursors.down.isDown) {
+//        tileSprite.tilePosition.y -= 8;
+//    }
+//}
 //# sourceMappingURL=app.js.map

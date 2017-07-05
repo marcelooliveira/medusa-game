@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.css" />
+    <Content Include="assets\backgrounds\level01.jpg" />
+    <Content Include="game.js" />
     <Content Include="index.html" />
     <Content Include="phaser2.png" />
     <Content Include="phaser.js" />
