@@ -5,12 +5,12 @@ var cursors;
 
 function preload() {
     // Load starfield image
-    game.load.image('starfield', 'assets/backgrounds/level01.jpg');
+    game.load.image('level', 'assets/backgrounds/level01.jpg');
     game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
     game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
 }
 
-var playerSprite;
+var player;
 var bossSprite;
 
 function create() {
@@ -24,24 +24,34 @@ function create() {
     *
     **/
     // Create a tilesprite (x, y, width, height, key)
-    tileSprite = game.add.tileSprite(0, 0, 512, 3776, 'starfield');
+    tileSprite = game.add.tileSprite(0, 0, 512, 3776, 'level');
+
+    game.world.setBounds(0, 0, 512, 3776);
+
+    game.physics.startSystem(Phaser.Physics.P2JS);
+    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+
+    game.physics.p2.enable(player);
+
+    player.body.fixedRotation = true;
 
     cursors = game.input.keyboard.createCursorKeys();
     game.debug.text('Press down arrow keys to move the tileSprite', 20, 20);
 
-    playerSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
-    playerSprite.anchor.setTo(0.5, 0.5);
-    //playerSprite.scale.setTo(2, 2);
+    player.anchor.setTo(0.5, 0.5);
+    //player.scale.setTo(2, 2);
+    game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
-    playerSprite.animations.add('run');
-    playerSprite.animations.play('run', 7.5, true);
+    player.animations.add('run');
+    player.animations.play('run', 7.5, true);
 
     bossSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'boss');
     bossSprite.anchor.setTo(0.75, 3.5);
-    //playerSprite.scale.setTo(2, 2);
+    //player.scale.setTo(2, 2);
 
     bossSprite.animations.add('run');
     bossSprite.animations.play('run', 3, true);
+
 }
 
 function update() {
@@ -61,17 +71,23 @@ function update() {
     //    tileSprite.tilePosition.y -= 8;
     //}
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-        playerSprite.x -= 4;
+    player.body.setZeroVelocity();
+
+    if (cursors.up.isDown) {
+        player.body.moveUp(300)
     }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-        playerSprite.x += 4;
+    else if (cursors.down.isDown) {
+        player.body.moveDown(300);
     }
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-        playerSprite.y -= 4;
+    if (cursors.left.isDown) {
+        player.body.velocity.x = -300;
     }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-        playerSprite.y += 4;
+    else if (cursors.right.isDown) {
+        player.body.moveRight(300);
     }
+}
+
+function render() {
+    game.debug.cameraInfo(game.camera, 32, 32);
 }
