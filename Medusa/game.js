@@ -74,17 +74,17 @@ function update() {
     player.body.setZeroVelocity();
 
     if (cursors.up.isDown) {
-        player.body.moveUp(300)
+        player.body.moveUp(180)
     }
     else if (cursors.down.isDown) {
-        player.body.moveDown(300);
+        player.body.moveDown(180);
     }
 
     if (cursors.left.isDown) {
-        player.body.velocity.x = -300;
+        player.body.velocity.x = -180;
     }
     else if (cursors.right.isDown) {
-        player.body.moveRight(300);
+        player.body.moveRight(180);
     }
 }
 
