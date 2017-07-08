@@ -1,40 +1,34 @@
-﻿class SimpleGame {
+﻿/// <reference path="pixi.d.ts" />
+/// <reference path="p2.d.ts" />
 
-    constructor() {
-        this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
-    }
-
+class MedusaGame {
     game: Phaser.Game;
     tileSprite: Phaser.TileSprite;
-    cursors: Phaser.CursorKeys;
     player: Phaser.Sprite;
     bossSprite: Phaser.Sprite;
+    cursors: Phaser.CursorKeys;
 
-    preload() {
-        // Load starfield image
+    constructor() {
+        this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
+            create: this.create, preload: this.preload,
+            update: this.update
+            //, render: this.render
+        });
+    }
+
+    preload() { 
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
         this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
     }
 
     create() {
-        //var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
-        //logo.anchor.setTo(0.5, 0.5);
-
-        /**
-        * 
-        *  A TileSprite is a Sprite that has a repeating texture. 
-        *  The texture can be scrolled and scaled independently of the TileSprite itself.
-        *  Textures will automatically wrap and are designed so that you can create game
-        *  backdrops using seamless textures as a source.
-        *
-        **/
-        // Create a tilesprite (x, y, width, height, key)
         this.tileSprite = this.game.add.tileSprite(0, 0, 512, 3776, 'level');
 
         this.game.world.setBounds(0, 0, 512, 3776);
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
+        this.cursors = this.game.input.keyboard.createCursorKeys();
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
         this.game.physics.p2.enable(this.player);
@@ -42,6 +36,7 @@
         this.player.body.fixedRotation = true;
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
         this.game.debug.text('Press down arrow keys to move the tileSprite', 20, 20);
 
         this.player.anchor.setTo(0.5, 0.5);
@@ -61,9 +56,8 @@
     }
 
     update() {
-
-        this.player.body.setZeroVelocity();
         // Update input state
+        this.player.body.setZeroVelocity();
         this.game.input.update();
 
         if (this.cursors.up.isDown) {
@@ -88,6 +82,6 @@
 
 window.onload = () => {
 
-    var game = new SimpleGame();
+    var game = new MedusaGame();
 
 };

@@ -1,28 +1,23 @@
-var SimpleGame = (function () {
-    function SimpleGame() {
-        this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
+/// <reference path="pixi.d.ts" />
+/// <reference path="p2.d.ts" />
+var MedusaGame = (function () {
+    function MedusaGame() {
+        this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
+            create: this.create, preload: this.preload,
+            update: this.update
+            //, render: this.render
+        });
     }
-    SimpleGame.prototype.preload = function () {
-        // Load starfield image
+    MedusaGame.prototype.preload = function () {
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
         this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
     };
-    SimpleGame.prototype.create = function () {
-        //var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
-        //logo.anchor.setTo(0.5, 0.5);
-        /**
-        *
-        *  A TileSprite is a Sprite that has a repeating texture.
-        *  The texture can be scrolled and scaled independently of the TileSprite itself.
-        *  Textures will automatically wrap and are designed so that you can create game
-        *  backdrops using seamless textures as a source.
-        *
-        **/
-        // Create a tilesprite (x, y, width, height, key)
+    MedusaGame.prototype.create = function () {
         this.tileSprite = this.game.add.tileSprite(0, 0, 512, 3776, 'level');
         this.game.world.setBounds(0, 0, 512, 3776);
         this.game.physics.startSystem(Phaser.Physics.P2JS);
+        this.cursors = this.game.input.keyboard.createCursorKeys();
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
         this.game.physics.p2.enable(this.player);
         this.player.body.fixedRotation = true;
@@ -39,9 +34,9 @@ var SimpleGame = (function () {
         this.bossSprite.animations.add('run');
         this.bossSprite.animations.play('run', 3, true);
     };
-    SimpleGame.prototype.update = function () {
-        this.player.body.setZeroVelocity();
+    MedusaGame.prototype.update = function () {
         // Update input state
+        this.player.body.setZeroVelocity();
         this.game.input.update();
         if (this.cursors.up.isDown) {
             this.player.body.moveUp(180);
@@ -56,12 +51,12 @@ var SimpleGame = (function () {
             this.player.body.moveRight(180);
         }
     };
-    SimpleGame.prototype.render = function () {
+    MedusaGame.prototype.render = function () {
         this.game.debug.cameraInfo(this.game.camera, 32, 32);
     };
-    return SimpleGame;
+    return MedusaGame;
 }());
 window.onload = function () {
-    var game = new SimpleGame();
+    var game = new MedusaGame();
 };
 //# sourceMappingURL=app.js.map
