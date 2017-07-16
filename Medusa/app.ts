@@ -44,14 +44,14 @@ class MedusaGame {
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
         this.player.animations.add('run');
-        this.player.animations.play('run', 7.5, true);
+        this.player.animations.play('run', 3, true);
 
         this.bossSprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'boss');
         this.bossSprite.anchor.setTo(0.75, 3.5);
         //player.scale.setTo(2, 2);
 
         this.bossSprite.animations.add('run');
-        this.bossSprite.animations.play('run', 3, true);
+        this.bossSprite.animations.play('run', 2, true);
 
     }
 
