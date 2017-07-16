@@ -56,6 +56,7 @@
     <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="assets\maps\Map01.txt" />
     <Content Include="assets\sprites\boss.png" />
     <Content Include="assets\sprites\player.png" />
     <Content Include="assets\sprites\player.json" />
