@@ -10,13 +10,14 @@ class MedusaGame {
     player: Phaser.Sprite;
     bossSprite: Phaser.Sprite;
     cursors: Phaser.CursorKeys;
+    music: Phaser.Sound;
+    bulletSound: Phaser.Sound;
     playerVelocity: number;
-
+    isWeaponLoaded: boolean;
     constructor() {
         this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
-            update: this.update, readFile: this.readFile,
-            playerVelocity: this.playerVelocity
+            update: this.update, readFile: this.readFile
         });
     }
 
@@ -24,11 +25,18 @@ class MedusaGame {
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
         this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
+        this.game.load.audio('music', ['assets/audio/Level1.mp3']);
+        this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
     }
 
     create() {
         this.tileSprite = this.game.add.tileSprite(0, 0, 512, 3776, 'level');
         this.game.world.setBounds(0, 0, 512, 3776);
+
+        this.music = this.game.add.audio('music');
+        this.music.play();
+        this.bulletSound = this.game.add.audio('bulletSound');
+        this.bulletSound.allowMultiple = true;
 
         //  Creates a blank tilemap
         this.map = this.game.add.tilemap();
@@ -75,6 +83,7 @@ class MedusaGame {
         this.player.animations.add('run');
         this.player.animations.play('run', 3, true);
         this.playerVelocity = 150;
+        this.isWeaponLoaded = true;
         this.game.physics.arcade.enable(this.player);
 
         this.player.body.collideWorldBounds = true;
@@ -107,6 +116,14 @@ class MedusaGame {
         }
         else if (this.cursors.right.isDown) {
             this.player.body.velocity.x = this.playerVelocity;
+        }
+
+        if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
+            this.isWeaponLoaded = false;
+            this.bulletSound.play();
+        }
+        else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
+            this.isWeaponLoaded = true;
         }
     }
 
