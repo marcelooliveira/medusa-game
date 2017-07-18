@@ -1,10 +1,14 @@
 /// <reference path="pixi.d.ts" />
 /// <reference path="p2.d.ts" />
+/// <reference path="player.ts" />
 var MedusaGame = (function () {
     function MedusaGame() {
         this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
-            update: this.update, readFile: this.readFile
+            update: this.update, readFile: this.readFile,
+            setupMap: this.setupMap, setupPlayer: this.setupPlayer,
+            setupBoss: this.setupBoss, setupAudio: this.setupAudio,
+            setupKeyboard: this.setupKeyboard
         });
     }
     MedusaGame.prototype.preload = function () {
@@ -15,12 +19,29 @@ var MedusaGame = (function () {
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
     };
     MedusaGame.prototype.create = function () {
+        this.setupAudio();
+        this.setupMap();
+        this.setupBoss();
+        this.setupKeyboard();
+        this.setupPlayer();
+    };
+    MedusaGame.prototype.update = function () {
+        this.game.input.update();
+        this.player.update();
+    };
+    MedusaGame.prototype.render = function () {
+        this.game.debug.cameraInfo(this.game.camera, 32, 32);
+    };
+    MedusaGame.prototype.readFile = function (file) {
+        var request = new XMLHttpRequest();
+        request.open("GET", file, false);
+        request.send(null);
+        var returnValue = request.responseText;
+        return returnValue;
+    };
+    MedusaGame.prototype.setupMap = function () {
         this.tileSprite = this.game.add.tileSprite(0, 0, 512, 3776, 'level');
         this.game.world.setBounds(0, 0, 512, 3776);
-        this.music = this.game.add.audio('music');
-        this.music.play();
-        this.bulletSound = this.game.add.audio('bulletSound');
-        this.bulletSound.allowMultiple = true;
         //  Creates a blank tilemap
         this.map = this.game.add.tilemap();
         //  This is our tileset - it's just a BitmapData filled with a selection of randomly colored tiles
@@ -51,53 +72,24 @@ var MedusaGame = (function () {
             }
         }
         this.map.setCollisionByExclusion([0]);
-        this.player = this.game.add.sprite(this.game.world.centerX - 16, this.game.world.height - 64, 'player');
-        this.player.animations.add('run');
-        this.player.animations.play('run', 3, true);
-        this.playerVelocity = 150;
-        this.isWeaponLoaded = true;
-        this.game.physics.arcade.enable(this.player);
-        this.player.body.collideWorldBounds = true;
-        this.player.body.setSize(32, 32, 0, 0);
-        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+    };
+    MedusaGame.prototype.setupAudio = function () {
+        this.music = this.game.add.audio('music');
+        this.music.play();
+        this.bulletSound = this.game.add.audio('bulletSound');
+        this.bulletSound.allowMultiple = true;
+    };
+    MedusaGame.prototype.setupPlayer = function () {
+        this.player = new Player(this.game, this.cursors, this.layer, this.bulletSound);
+        this.player.setup();
+    };
+    MedusaGame.prototype.setupBoss = function () {
         this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
         this.bossSprite.animations.add('run');
         this.bossSprite.animations.play('run', 2, true);
     };
-    MedusaGame.prototype.update = function () {
-        this.game.input.update();
-        this.game.physics.arcade.collide(this.player, this.layer);
-        this.player.body.velocity.set(0);
-        if (this.cursors.up.isDown) {
-            this.player.body.velocity.y = -this.playerVelocity;
-        }
-        else if (this.cursors.down.isDown) {
-            this.player.body.velocity.y = this.playerVelocity;
-        }
-        if (this.cursors.left.isDown) {
-            this.player.body.velocity.x = -this.playerVelocity;
-        }
-        else if (this.cursors.right.isDown) {
-            this.player.body.velocity.x = this.playerVelocity;
-        }
-        if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = false;
-            this.bulletSound.play();
-        }
-        else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = true;
-        }
-    };
-    MedusaGame.prototype.render = function () {
-        this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    };
-    MedusaGame.prototype.readFile = function (file) {
-        var request = new XMLHttpRequest();
-        request.open("GET", file, false);
-        request.send(null);
-        var returnValue = request.responseText;
-        return returnValue;
+    MedusaGame.prototype.setupKeyboard = function () {
+        this.cursors = this.game.input.keyboard.createCursorKeys();
     };
     return MedusaGame;
 }());

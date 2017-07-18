@@ -1,5 +1,6 @@
 ﻿/// <reference path="pixi.d.ts" />
 /// <reference path="p2.d.ts" />
+/// <reference path="player.ts" />
 
 class MedusaGame {
     game: Phaser.Game;
@@ -7,17 +8,18 @@ class MedusaGame {
     bmd: Phaser.BitmapData;
     layer: Phaser.TilemapLayer;
     tileSprite: Phaser.TileSprite;
-    player: Phaser.Sprite;
+    player: Player;
     bossSprite: Phaser.Sprite;
     cursors: Phaser.CursorKeys;
     music: Phaser.Sound;
     bulletSound: Phaser.Sound;
-    playerVelocity: number;
-    isWeaponLoaded: boolean;
     constructor() {
         this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
-            update: this.update, readFile: this.readFile
+            update: this.update, readFile: this.readFile,
+            setupMap: this.setupMap, setupPlayer: this.setupPlayer,
+            setupBoss: this.setupBoss, setupAudio: this.setupAudio,
+            setupKeyboard: this.setupKeyboard
         });
     }
 
@@ -30,13 +32,35 @@ class MedusaGame {
     }
 
     create() {
+        this.setupAudio();
+        this.setupMap();
+        this.setupBoss();
+        this.setupKeyboard();
+        this.setupPlayer();
+    }
+            
+    update() {
+       
+        this.game.input.update();
+        this.player.update();
+    }
+
+    render() {
+        this.game.debug.cameraInfo(this.game.camera, 32, 32);
+    }
+
+    readFile(file: string) : string {
+        var request = new XMLHttpRequest();
+        request.open("GET", file, false);
+        request.send(null);
+        var returnValue = request.responseText;
+
+        return returnValue;
+    }
+
+    setupMap() {
         this.tileSprite = this.game.add.tileSprite(0, 0, 512, 3776, 'level');
         this.game.world.setBounds(0, 0, 512, 3776);
-
-        this.music = this.game.add.audio('music');
-        this.music.play();
-        this.bulletSound = this.game.add.audio('bulletSound');
-        this.bulletSound.allowMultiple = true;
 
         //  Creates a blank tilemap
         this.map = this.game.add.tilemap();
@@ -66,8 +90,7 @@ class MedusaGame {
         //  Populate some tiles for our player to start on
 
         var lines = this.readFile("/assets/maps/Map01.txt").split('\n');
-        for (var y = 0; y < lines.length; y++)
-        {
+        for (var y = 0; y < lines.length; y++) {
             var line = lines[y];
             for (var x = 0; x < line.length; x++) {
                 var char = line[x];
@@ -78,66 +101,28 @@ class MedusaGame {
         }
 
         this.map.setCollisionByExclusion([0]);
+    }
 
-        this.player = this.game.add.sprite(this.game.world.centerX - 16, this.game.world.height - 64, 'player');
-        this.player.animations.add('run');
-        this.player.animations.play('run', 3, true);
-        this.playerVelocity = 150;
-        this.isWeaponLoaded = true;
-        this.game.physics.arcade.enable(this.player);
+    setupAudio() {
+        this.music = this.game.add.audio('music');
+        this.music.play();
+        this.bulletSound = this.game.add.audio('bulletSound');
+        this.bulletSound.allowMultiple = true;
+    }
 
-        this.player.body.collideWorldBounds = true;
-        this.player.body.setSize(32, 32, 0, 0);
-        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+    setupPlayer() {
+        this.player = new Player(this.game, this.cursors, this.layer, this.bulletSound);
+        this.player.setup();
+    }
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
-
+    setupBoss() {
         this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
-
         this.bossSprite.animations.add('run');
         this.bossSprite.animations.play('run', 2, true);
     }
-            
-    update() {
-       
-        this.game.input.update();
-        this.game.physics.arcade.collide(this.player, this.layer);
 
-        this.player.body.velocity.set(0);
-        if (this.cursors.up.isDown) {
-            this.player.body.velocity.y = -this.playerVelocity;
-        }
-        else if (this.cursors.down.isDown) {
-            this.player.body.velocity.y = this.playerVelocity;
-        }
-
-        if (this.cursors.left.isDown) {
-            this.player.body.velocity.x = -this.playerVelocity;
-        }
-        else if (this.cursors.right.isDown) {
-            this.player.body.velocity.x = this.playerVelocity;
-        }
-
-        if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = false;
-            this.bulletSound.play();
-        }
-        else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = true;
-        }
-    }
-
-    render() {
-        this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    }
-
-    readFile(file: string) : string {
-        var request = new XMLHttpRequest();
-        request.open("GET", file, false);
-        request.send(null);
-        var returnValue = request.responseText;
-
-        return returnValue;
+    setupKeyboard() {
+        this.cursors = this.game.input.keyboard.createCursorKeys();
     }
 }
 
