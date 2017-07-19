@@ -7,28 +7,36 @@ var MedusaGame = (function () {
             create: this.create, preload: this.preload,
             update: this.update, readFile: this.readFile,
             setupMap: this.setupMap, setupPlayer: this.setupPlayer,
-            setupBoss: this.setupBoss, setupAudio: this.setupAudio,
-            setupKeyboard: this.setupKeyboard
+            setupBoss: this.setupBoss, playerBullets: this.playerBullets,
+            setupAudio: this.setupAudio, setupKeyboard: this.setupKeyboard,
+            setupPlayerBullets: this.setupPlayerBullets,
+            firePlayerBullet: this.firePlayerBullet,
+            playerBulletHit: this.playerBulletHit
         });
     }
     MedusaGame.prototype.preload = function () {
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
         this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
+        this.game.load.atlasJSONHash('playerBullet', 'assets/sprites/PlayerBullet1SpriteSheet.png', 'assets/sprites/PlayerBullet1SpriteSheet.json');
         this.game.load.audio('music', ['assets/audio/Level1.mp3']);
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
     };
     MedusaGame.prototype.create = function () {
         this.setupAudio();
         this.setupMap();
-        this.setupBoss();
         this.setupKeyboard();
         this.setupPlayer();
+        this.setupBoss();
+        this.setupPlayerBullets();
     };
     MedusaGame.prototype.update = function () {
         this.game.input.update();
         this.player.update();
         this.boss.update();
+        this.playerBullets.forEach(function (bullet) {
+            bullet.update();
+        });
     };
     MedusaGame.prototype.render = function () {
         this.game.debug.cameraInfo(this.game.camera, 32, 32);
@@ -75,7 +83,7 @@ var MedusaGame = (function () {
         this.map.setCollisionByExclusion([0]);
     };
     MedusaGame.prototype.setupAudio = function () {
-        this.volume = .05;
+        this.volume = .2;
         this.music = this.game.add.audio('music');
         this.music.volume = this.volume;
         this.music.play();
@@ -84,18 +92,38 @@ var MedusaGame = (function () {
         this.bulletSound.allowMultiple = true;
     };
     MedusaGame.prototype.setupPlayer = function () {
-        this.player = new Player(this.game, this.cursors, this.layer, this.bulletSound);
+        this.player = new Player(this, this.cursors, this.layer, this.bulletSound);
         this.player.setup();
     };
     MedusaGame.prototype.setupBoss = function () {
         //this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
         //this.bossSprite.animations.add('run');
         //this.bossSprite.animations.play('run', 2, true);
-        this.boss = new Boss(this.game, this.layer, this.bulletSound);
+        this.boss = new Boss(this.game, this.layer, this.bulletSound, this.player);
         this.boss.setup();
+    };
+    MedusaGame.prototype.setupPlayerBullets = function () {
+        this.playerBullets = [];
     };
     MedusaGame.prototype.setupKeyboard = function () {
         this.cursors = this.game.input.keyboard.createCursorKeys();
+    };
+    MedusaGame.prototype.firePlayerBullet = function () {
+        //alert('firePlayerBullet');
+        var playerBullet = new PlayerBullet(this, this.layer, this.bulletSound, this.player, this.boss);
+        playerBullet.setup();
+        this.playerBullets.push(playerBullet);
+    };
+    MedusaGame.prototype.playerBulletHit = function (playerBullet, target) {
+        var _this = this;
+        //alert(target);
+        this.playerBullets.forEach(function (b, i) {
+            if (b == playerBullet) {
+                _this.playerBullets.splice(i, 1);
+                //alert(this.playerBullets.length);
+                return true;
+            }
+        });
     };
     return MedusaGame;
 }());

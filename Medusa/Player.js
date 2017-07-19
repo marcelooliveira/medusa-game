@@ -1,6 +1,7 @@
 var Player = (function () {
-    function Player(game, cursors, layer, bulletSound) {
-        this.game = game;
+    function Player(medusaGame, cursors, layer, bulletSound) {
+        this.medusaGame = medusaGame;
+        this.game = medusaGame.game;
         this.cursors = cursors;
         this.layer = layer;
         this.bulletSound = bulletSound;
@@ -26,7 +27,8 @@ var Player = (function () {
         }
         if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = false;
-            this.bulletSound.play();
+            //this.bulletSound.play();
+            this.medusaGame.firePlayerBullet();
         }
         else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = true;

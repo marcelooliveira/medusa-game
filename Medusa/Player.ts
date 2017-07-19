@@ -1,4 +1,5 @@
 ﻿class Player {
+    medusaGame: MedusaGame;
     game: Phaser.Game;
     cursors: Phaser.CursorKeys;
     layer: Phaser.TilemapLayer;
@@ -8,9 +9,10 @@
     playerVelocity: number;
 
     constructor(
-        game: Phaser.Game, cursors: Phaser.CursorKeys,
+        medusaGame: MedusaGame, cursors: Phaser.CursorKeys,
         layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound) {
-        this.game = game;
+        this.medusaGame = medusaGame;
+        this.game = medusaGame.game;
         this.cursors = cursors;
         this.layer = layer;
         this.bulletSound = bulletSound;
@@ -42,7 +44,8 @@
 
         if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = false;
-            this.bulletSound.play();
+            //this.bulletSound.play();
+            this.medusaGame.firePlayerBullet();
         }
         else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = true;

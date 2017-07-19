@@ -10,6 +10,7 @@ class MedusaGame {
     tileSprite: Phaser.TileSprite;
     player: Player;
     boss: Boss;
+    playerBullets: PlayerBullet[];
     cursors: Phaser.CursorKeys;
     music: Phaser.Sound;
     bulletSound: Phaser.Sound;
@@ -19,8 +20,11 @@ class MedusaGame {
             create: this.create, preload: this.preload,
             update: this.update, readFile: this.readFile,
             setupMap: this.setupMap, setupPlayer: this.setupPlayer,
-            setupBoss: this.setupBoss, setupAudio: this.setupAudio,
-            setupKeyboard: this.setupKeyboard
+            setupBoss: this.setupBoss, playerBullets: this.playerBullets,
+            setupAudio: this.setupAudio, setupKeyboard: this.setupKeyboard,
+            setupPlayerBullets: this.setupPlayerBullets,
+            firePlayerBullet: this.firePlayerBullet,
+            playerBulletHit: this.playerBulletHit
         });
     }
 
@@ -28,6 +32,7 @@ class MedusaGame {
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
         this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
+        this.game.load.atlasJSONHash('playerBullet', 'assets/sprites/PlayerBullet1SpriteSheet.png', 'assets/sprites/PlayerBullet1SpriteSheet.json');
         this.game.load.audio('music', ['assets/audio/Level1.mp3']);
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
     }
@@ -35,9 +40,10 @@ class MedusaGame {
     create() {
         this.setupAudio();
         this.setupMap();
-        this.setupBoss();
         this.setupKeyboard();
         this.setupPlayer();
+        this.setupBoss();
+        this.setupPlayerBullets();
     }
             
     update() {
@@ -45,6 +51,9 @@ class MedusaGame {
         this.game.input.update();
         this.player.update();
         this.boss.update();
+        this.playerBullets.forEach(bullet => {
+            bullet.update();
+        });
     }
 
     render() {
@@ -106,7 +115,7 @@ class MedusaGame {
     }
 
     setupAudio() {
-        this.volume = .05;
+        this.volume = .2;
         this.music = this.game.add.audio('music');
         this.music.volume = this.volume;
         this.music.play();
@@ -116,7 +125,7 @@ class MedusaGame {
     }
 
     setupPlayer() {
-        this.player = new Player(this.game, this.cursors, this.layer, this.bulletSound);
+        this.player = new Player(this, this.cursors, this.layer, this.bulletSound);
         this.player.setup();
     }
 
@@ -124,12 +133,34 @@ class MedusaGame {
         //this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
         //this.bossSprite.animations.add('run');
         //this.bossSprite.animations.play('run', 2, true);
-        this.boss = new Boss(this.game, this.layer, this.bulletSound);
+        this.boss = new Boss(this.game, this.layer, this.bulletSound, this.player);
         this.boss.setup();
+    }
+
+    setupPlayerBullets() {
+        this.playerBullets = [];
     }
 
     setupKeyboard() {
         this.cursors = this.game.input.keyboard.createCursorKeys();
+    }
+
+    firePlayerBullet() {
+        //alert('firePlayerBullet');
+        var playerBullet = new PlayerBullet(this, this.layer, this.bulletSound, this.player, this.boss);
+        playerBullet.setup();
+        this.playerBullets.push(playerBullet);
+    }
+
+    playerBulletHit(playerBullet, target) {
+        //alert(target);
+        this.playerBullets.forEach((b, i) => {
+            if (b == playerBullet) {
+                this.playerBullets.splice(i, 1);
+                //alert(this.playerBullets.length);
+                return true;
+            }
+        });
     }
 }
 
