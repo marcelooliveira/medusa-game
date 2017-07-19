@@ -28,6 +28,7 @@ var MedusaGame = (function () {
     MedusaGame.prototype.update = function () {
         this.game.input.update();
         this.player.update();
+        this.boss.update();
     };
     MedusaGame.prototype.render = function () {
         this.game.debug.cameraInfo(this.game.camera, 32, 32);
@@ -74,9 +75,12 @@ var MedusaGame = (function () {
         this.map.setCollisionByExclusion([0]);
     };
     MedusaGame.prototype.setupAudio = function () {
+        this.volume = .05;
         this.music = this.game.add.audio('music');
+        this.music.volume = this.volume;
         this.music.play();
         this.bulletSound = this.game.add.audio('bulletSound');
+        this.bulletSound.volume = this.volume;
         this.bulletSound.allowMultiple = true;
     };
     MedusaGame.prototype.setupPlayer = function () {
@@ -84,9 +88,11 @@ var MedusaGame = (function () {
         this.player.setup();
     };
     MedusaGame.prototype.setupBoss = function () {
-        this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
-        this.bossSprite.animations.add('run');
-        this.bossSprite.animations.play('run', 2, true);
+        //this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
+        //this.bossSprite.animations.add('run');
+        //this.bossSprite.animations.play('run', 2, true);
+        this.boss = new Boss(this.game, this.layer, this.bulletSound);
+        this.boss.setup();
     };
     MedusaGame.prototype.setupKeyboard = function () {
         this.cursors = this.game.input.keyboard.createCursorKeys();

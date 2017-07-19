@@ -9,10 +9,11 @@ class MedusaGame {
     layer: Phaser.TilemapLayer;
     tileSprite: Phaser.TileSprite;
     player: Player;
-    bossSprite: Phaser.Sprite;
+    boss: Boss;
     cursors: Phaser.CursorKeys;
     music: Phaser.Sound;
     bulletSound: Phaser.Sound;
+    volume: number;
     constructor() {
         this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
@@ -43,6 +44,7 @@ class MedusaGame {
        
         this.game.input.update();
         this.player.update();
+        this.boss.update();
     }
 
     render() {
@@ -104,9 +106,12 @@ class MedusaGame {
     }
 
     setupAudio() {
+        this.volume = .05;
         this.music = this.game.add.audio('music');
+        this.music.volume = this.volume;
         this.music.play();
         this.bulletSound = this.game.add.audio('bulletSound');
+        this.bulletSound.volume = this.volume;
         this.bulletSound.allowMultiple = true;
     }
 
@@ -116,9 +121,11 @@ class MedusaGame {
     }
 
     setupBoss() {
-        this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
-        this.bossSprite.animations.add('run');
-        this.bossSprite.animations.play('run', 2, true);
+        //this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
+        //this.bossSprite.animations.add('run');
+        //this.bossSprite.animations.play('run', 2, true);
+        this.boss = new Boss(this.game, this.layer, this.bulletSound);
+        this.boss.setup();
     }
 
     setupKeyboard() {
