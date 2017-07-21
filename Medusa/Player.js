@@ -35,8 +35,8 @@ var Player = (function () {
         }
     };
     Player.prototype.setup = function () {
-        //this.sprite = this.game.add.sprite(this.game.world.centerX - 16, this.game.world.height - 64, 'player');
-        this.sprite = this.game.add.sprite(this.game.world.centerX - 16, 256, 'player');
+        this.sprite = this.game.add.sprite(this.game.world.centerX - 16, this.game.world.height - 64, 'player');
+        //this.sprite = this.game.add.sprite(this.game.world.centerX - 16, 256, 'player');
         this.sprite.animations.add('run');
         this.sprite.animations.play('run', 3, true);
         this.playerVelocity = 150;

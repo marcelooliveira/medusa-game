@@ -80,6 +80,19 @@
     <Content Include="assets\audio\Weapon.wav" />
     <Content Include="assets\maps\Map01.txt" />
     <Content Include="assets\sprites\boss.png" />
+    <Content Include="assets\sprites\enemy10.png" />
+    <Content Include="assets\sprites\enemy11.png" />
+    <Content Include="assets\sprites\enemy12.png" />
+    <Content Include="assets\sprites\enemy13.png" />
+    <Content Include="assets\sprites\enemy1.png" />
+    <Content Include="assets\sprites\enemy2.png" />
+    <Content Include="assets\sprites\enemy3.png" />
+    <Content Include="assets\sprites\enemy4.png" />
+    <Content Include="assets\sprites\enemy5.png" />
+    <Content Include="assets\sprites\enemy6.png" />
+    <Content Include="assets\sprites\enemy7.png" />
+    <Content Include="assets\sprites\enemy8.png" />
+    <Content Include="assets\sprites\enemy9.png" />
     <Content Include="assets\sprites\player.png" />
     <Content Include="assets\sprites\player.json" />
     <Content Include="assets\sprites\boss.json" />
@@ -111,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="enemy.ts" />
     <TypeScriptCompile Include="playerBullet.ts" />
     <TypeScriptCompile Include="p2.d.ts" />
     <TypeScriptCompile Include="phaser.d.ts" />

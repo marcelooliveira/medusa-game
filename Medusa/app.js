@@ -7,7 +7,8 @@ var MedusaGame = (function () {
             create: this.create, preload: this.preload,
             update: this.update, readFile: this.readFile,
             setupMap: this.setupMap, setupPlayer: this.setupPlayer,
-            setupBoss: this.setupBoss, playerBullets: this.playerBullets,
+            setupBoss: this.setupBoss, setupEnemies: this.setupEnemies,
+            playerBullets: this.playerBullets,
             setupAudio: this.setupAudio, setupKeyboard: this.setupKeyboard,
             setupPlayerBullets: this.setupPlayerBullets,
             firePlayerBullet: this.firePlayerBullet,
@@ -17,7 +18,19 @@ var MedusaGame = (function () {
     MedusaGame.prototype.preload = function () {
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
-        this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
+        //this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
+        this.game.load.spritesheet('boss', 'assets/sprites/boss.png', 96, 96);
+        this.game.load.spritesheet('enemy1', 'assets/sprites/enemy1.png', 32, 32);
+        this.game.load.spritesheet('enemy2', 'assets/sprites/enemy2.png', 32, 32);
+        this.game.load.spritesheet('enemy3', 'assets/sprites/enemy3.png', 32, 32);
+        this.game.load.spritesheet('enemy4', 'assets/sprites/enemy4.png', 32, 32);
+        this.game.load.spritesheet('enemy5', 'assets/sprites/enemy5.png', 32, 32);
+        this.game.load.spritesheet('enemy6', 'assets/sprites/enemy6.png', 32, 32);
+        this.game.load.spritesheet('enemy7', 'assets/sprites/enemy7.png', 32, 32);
+        this.game.load.spritesheet('enemy8', 'assets/sprites/enemy8.png', 32, 32);
+        this.game.load.spritesheet('enemy9', 'assets/sprites/enemy9.png', 32, 32);
+        this.game.load.spritesheet('enemy10', 'assets/sprites/enemy10.png', 32, 32);
+        this.game.load.spritesheet('enemy11', 'assets/sprites/enemy11.png', 32, 32);
         this.game.load.atlasJSONHash('playerBullet', 'assets/sprites/PlayerBullet1SpriteSheet.png', 'assets/sprites/PlayerBullet1SpriteSheet.json');
         this.game.load.audio('music', ['assets/audio/Level1.mp3']);
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
@@ -28,12 +41,16 @@ var MedusaGame = (function () {
         this.setupKeyboard();
         this.setupPlayer();
         this.setupBoss();
+        this.setupEnemies();
         this.setupPlayerBullets();
     };
     MedusaGame.prototype.update = function () {
         this.game.input.update();
         this.player.update();
         this.boss.update();
+        this.enemies.forEach(function (enemy) {
+            enemy.update();
+        });
         this.playerBullets.forEach(function (bullet) {
             bullet.update();
         });
@@ -98,6 +115,23 @@ var MedusaGame = (function () {
     MedusaGame.prototype.setupBoss = function () {
         this.boss = new Boss(this.game, this.layer, this.bulletSound, this.player);
         this.boss.setup();
+    };
+    MedusaGame.prototype.setupEnemies = function () {
+        this.enemies = [];
+        var enemycodes = 'abcdefghijklmnop';
+        var lines = this.readFile("/assets/maps/Map01.txt").split('\n');
+        for (var y = 0; y < lines.length; y++) {
+            var line = lines[y];
+            for (var x = 0; x < line.length; x++) {
+                var char = line[x];
+                var indexOf = enemycodes.indexOf(char);
+                if (indexOf >= 0) {
+                    var enemy = new Enemy(this.game, this.layer, this.bulletSound, this.player, x * 32, y * 32, indexOf + 1);
+                    enemy.setup();
+                    this.enemies.push(enemy);
+                }
+            }
+        }
     };
     MedusaGame.prototype.setupPlayerBullets = function () {
         this.playerBullets = [];
