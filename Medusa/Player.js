@@ -37,14 +37,18 @@ var Player = (function () {
     Player.prototype.setup = function () {
         this.sprite = this.game.add.sprite(this.game.world.centerX - 16, this.game.world.height - 64, 'player');
         //this.sprite = this.game.add.sprite(this.game.world.centerX - 16, 256, 'player');
-        this.sprite.animations.add('run');
-        this.sprite.animations.play('run', 3, true);
+        this.sprite.animations.add('run', [0, 1], 2, true);
+        this.sprite.animations.add('hit', [2, 3, 2, 3, 2, 3, 2, 3, 0], 10, true);
+        this.sprite.animations.play('run');
         this.playerVelocity = 150;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
         this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
     };
+    Player.prototype.wasHit = function () {
+        this.sprite.animations.play('hit', 10, false);
+    };
     return Player;
 }());
-//# sourceMappingURL=Player.js.map
+//# sourceMappingURL=player.js.map

@@ -11,6 +11,7 @@ var PlayerBullet = (function () {
     PlayerBullet.prototype.create = function () {
     };
     PlayerBullet.prototype.update = function () {
+        var _this = this;
         this.game.physics.arcade.collide(this.sprite, this.layer, function () {
             this.sprite.position.x = 0;
             this.sprite.position.y = 0;
@@ -22,13 +23,20 @@ var PlayerBullet = (function () {
             this.medusaGame.playerBulletHit(this, this.boss);
             this.sprite.destroy();
         }.bind(this));
+        this.medusaGame.enemies.forEach(function (enemy) {
+            _this.game.physics.arcade.collide(_this.sprite, enemy.sprite, function () {
+                this.medusaGame.playerBulletHit(this, enemy);
+                this.sprite.destroy();
+                enemy.sprite.destroy();
+            }.bind(_this));
+        });
     };
     PlayerBullet.prototype.setup = function () {
         this.sprite = this.game.add.sprite(this.player.sprite.position.x, this.player.sprite.position.y - 32, 'playerBullet');
         this.velocity = 500;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
-        this.sprite.body.setSize(96, 96, 0, 0);
+        this.sprite.body.setSize(32, 32, 0, 0);
         this.sprite.body.velocity.y = -this.velocity;
     };
     return PlayerBullet;

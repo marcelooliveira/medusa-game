@@ -17,9 +17,11 @@ var Enemy = (function () {
         //    this.velocity *= -1;
         //    this.sprite.body.velocity.x = this.velocity;
         //}.bind(this));
-        //this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
-        //    //alert('game over');
-        //}.bind(this));
+        this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
+            //alert('game over');
+            this.player.wasHit(this);
+            this.sprite.destroy();
+        }.bind(this));
         //if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
         //    this.isWeaponLoaded = false;
         //    this.bulletSound.play();
@@ -39,7 +41,7 @@ var Enemy = (function () {
         //this.velocity = 150;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
-        this.sprite.body.setSize(96, 96, 0, 0);
+        this.sprite.body.setSize(32, 32, 0, 0);
         //this.sprite.body.velocity.x = this.velocity;
     };
     Enemy.prototype.wasHit = function () {

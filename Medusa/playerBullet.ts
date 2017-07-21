@@ -39,6 +39,14 @@
             this.medusaGame.playerBulletHit(this, this.boss);
             this.sprite.destroy();
         }.bind(this));
+
+        this.medusaGame.enemies.forEach(enemy => {
+            this.game.physics.arcade.collide(this.sprite, enemy.sprite, function () {
+                this.medusaGame.playerBulletHit(this, enemy);
+                this.sprite.destroy();  
+                enemy.sprite.destroy();  
+            }.bind(this));
+        });
     }
 
     setup() {
@@ -47,7 +55,7 @@
         this.velocity = 500;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
-        this.sprite.body.setSize(96, 96, 0, 0);
+        this.sprite.body.setSize(32, 32, 0, 0);
         this.sprite.body.velocity.y = - this.velocity;
     }
 }

@@ -17,8 +17,7 @@ var MedusaGame = (function () {
     }
     MedusaGame.prototype.preload = function () {
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
-        this.game.load.atlasJSONHash('player', 'assets/sprites/player.png', 'assets/sprites/player.json');
-        //this.game.load.atlasJSONHash('boss', 'assets/sprites/boss.png', 'assets/sprites/boss.json');
+        this.game.load.spritesheet('player', 'assets/sprites/player.png', 32, 32);
         this.game.load.spritesheet('boss', 'assets/sprites/boss.png', 96, 96);
         this.game.load.spritesheet('enemy1', 'assets/sprites/enemy1.png', 32, 32);
         this.game.load.spritesheet('enemy2', 'assets/sprites/enemy2.png', 32, 32);
@@ -149,6 +148,12 @@ var MedusaGame = (function () {
         this.playerBullets.forEach(function (b, i) {
             if (b == playerBullet) {
                 _this.playerBullets.splice(i, 1);
+                return true;
+            }
+        });
+        this.enemies.forEach(function (e, i) {
+            if (e == target) {
+                _this.enemies.splice(i, 1);
                 return true;
             }
         });
