@@ -130,9 +130,6 @@ class MedusaGame {
     }
 
     setupBoss() {
-        //this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
-        //this.bossSprite.animations.add('run');
-        //this.bossSprite.animations.play('run', 2, true);
         this.boss = new Boss(this.game, this.layer, this.bulletSound, this.player);
         this.boss.setup();
     }
@@ -146,21 +143,22 @@ class MedusaGame {
     }
 
     firePlayerBullet() {
-        //alert('firePlayerBullet');
         var playerBullet = new PlayerBullet(this, this.layer, this.bulletSound, this.player, this.boss);
         playerBullet.setup();
         this.playerBullets.push(playerBullet);
     }
 
     playerBulletHit(playerBullet, target) {
-        //alert(target);
         this.playerBullets.forEach((b, i) => {
             if (b == playerBullet) {
                 this.playerBullets.splice(i, 1);
-                //alert(this.playerBullets.length);
                 return true;
             }
         });
+
+        if (target.wasHit) {
+            target.wasHit();
+        }
     }
 }
 

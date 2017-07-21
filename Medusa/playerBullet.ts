@@ -27,10 +27,6 @@
     update() {
 
         this.game.physics.arcade.collide(this.sprite, this.layer, function () {
-            //this.velocity *= -1;
-            //this.sprite.body.velocity.x = this.velocity;
-            //this.medusaGame.playerBulletHit(this, this.layer);
-            this.medusaGame.playerBulletHit(this, this.boss);
             this.sprite.position.x = 0;
             this.sprite.position.y = 0;
         }.bind(this));
@@ -39,10 +35,7 @@
             this.sprite.destroy();
         }
 
-        //this.sprite.destroy();
         this.game.physics.arcade.collide(this.sprite, this.boss.sprite, function () {
-            //alert('game over');
-            
             this.medusaGame.playerBulletHit(this, this.boss);
             this.sprite.destroy();
         }.bind(this));

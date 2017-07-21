@@ -96,9 +96,6 @@ var MedusaGame = (function () {
         this.player.setup();
     };
     MedusaGame.prototype.setupBoss = function () {
-        //this.bossSprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
-        //this.bossSprite.animations.add('run');
-        //this.bossSprite.animations.play('run', 2, true);
         this.boss = new Boss(this.game, this.layer, this.bulletSound, this.player);
         this.boss.setup();
     };
@@ -109,21 +106,21 @@ var MedusaGame = (function () {
         this.cursors = this.game.input.keyboard.createCursorKeys();
     };
     MedusaGame.prototype.firePlayerBullet = function () {
-        //alert('firePlayerBullet');
         var playerBullet = new PlayerBullet(this, this.layer, this.bulletSound, this.player, this.boss);
         playerBullet.setup();
         this.playerBullets.push(playerBullet);
     };
     MedusaGame.prototype.playerBulletHit = function (playerBullet, target) {
         var _this = this;
-        //alert(target);
         this.playerBullets.forEach(function (b, i) {
             if (b == playerBullet) {
                 _this.playerBullets.splice(i, 1);
-                //alert(this.playerBullets.length);
                 return true;
             }
         });
+        if (target.wasHit) {
+            target.wasHit();
+        }
     };
     return MedusaGame;
 }());

@@ -39,16 +39,26 @@
         else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = true;
         }
+
+        if (this.sprite.animations.currentAnim.name == 'run'
+            && this.sprite.animations.currentFrame.index == 0) {
+            this.sprite.animations.play('run');
+        }
     }
 
     setup() {
         this.sprite = this.game.add.sprite(this.game.world.centerX - 48, 64, 'boss');
-        this.sprite.animations.add('run');
-        this.sprite.animations.play('run', 2, true);
+        this.sprite.animations.add('run', [0, 1], 2, true);
+        this.sprite.animations.add('hit', [2, 3, 2, 3, 0], 10, true);
+        this.sprite.animations.play('run');
         this.velocity = 150;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(96, 96, 0, 0);
         this.sprite.body.velocity.x = this.velocity;
+    }
+
+    wasHit() {
+        this.sprite.animations.play('hit', 10, false);
     }
 }
