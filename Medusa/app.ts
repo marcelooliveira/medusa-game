@@ -26,7 +26,8 @@ class MedusaGame {
             setupAudio: this.setupAudio, setupKeyboard: this.setupKeyboard,
             setupPlayerBullets: this.setupPlayerBullets,
             firePlayerBullet: this.firePlayerBullet,
-            playerBulletHit: this.playerBulletHit
+            playerBulletHit: this.playerBulletHit,
+            getScrollStep: this.getScrollStep
         });
     }
 
@@ -71,6 +72,11 @@ class MedusaGame {
         this.playerBullets.forEach(bullet => {
             bullet.update();
         });
+
+        if (this.game.camera.y > 0) {
+            this.game.camera.y -= this.getScrollStep();
+            this.player.sprite.body.y -= this.getScrollStep() * 2;
+        }
     }
 
     render() {
@@ -113,7 +119,9 @@ class MedusaGame {
 
         //  Creates a new blank layer and sets the map dimensions.
         //  In this case the map is 40x30 tiles in size and the tiles are 32x32 pixels in size.
-        this.layer = this.map.create('level1', 16, 118, 32, 32);
+        var WIDTH_IN_TILES = 16;
+        var HEIGHT_IN_TILES = 118;
+        this.layer = this.map.create('level1', WIDTH_IN_TILES, HEIGHT_IN_TILES, 32, 32);
 
         //  Populate some tiles for our player to start on
 
@@ -129,6 +137,8 @@ class MedusaGame {
         }
 
         this.map.setCollisionByExclusion([0]);
+
+        this.game.camera.y = this.map.height * this.map.tileHeight;
     }
 
     setupAudio() {
@@ -202,6 +212,10 @@ class MedusaGame {
         if (target.wasHit) {
             target.wasHit();
         }
+    }
+
+    getScrollStep() {
+        return .5;
     }
 }
 

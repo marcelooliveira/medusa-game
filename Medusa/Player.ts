@@ -32,7 +32,12 @@
             this.sprite.body.velocity.y = -this.playerVelocity;
         }
         else if (this.cursors.down.isDown) {
-            this.sprite.body.velocity.y = this.playerVelocity;
+            //alert(this.game.camera.height);
+            if (this.sprite.body.y <
+                this.medusaGame.game.camera.y + this.game.camera.height
+                    - this.sprite.height) {
+                this.sprite.body.velocity.y = this.playerVelocity;
+            }
         }
 
         if (this.cursors.left.isDown) {
@@ -50,6 +55,13 @@
         else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = true;
         }
+
+        if (this.sprite.animations.currentAnim.name == 'hit'
+            && this.sprite.animations.currentFrame.index == 0) {
+            this.sprite.animations.play('run');
+        }
+
+        //this.sprite.body.y -= this.medusaGame.getScrollStep() * 2;
     }
 
     setup() {
@@ -63,7 +75,7 @@
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
-        this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+        //this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
     }
     
     wasHit() {

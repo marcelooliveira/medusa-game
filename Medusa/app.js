@@ -12,7 +12,8 @@ var MedusaGame = (function () {
             setupAudio: this.setupAudio, setupKeyboard: this.setupKeyboard,
             setupPlayerBullets: this.setupPlayerBullets,
             firePlayerBullet: this.firePlayerBullet,
-            playerBulletHit: this.playerBulletHit
+            playerBulletHit: this.playerBulletHit,
+            getScrollStep: this.getScrollStep
         });
     }
     MedusaGame.prototype.preload = function () {
@@ -53,6 +54,10 @@ var MedusaGame = (function () {
         this.playerBullets.forEach(function (bullet) {
             bullet.update();
         });
+        if (this.game.camera.y > 0) {
+            this.game.camera.y -= this.getScrollStep();
+            this.player.sprite.body.y -= this.getScrollStep() * 2;
+        }
     };
     MedusaGame.prototype.render = function () {
         this.game.debug.cameraInfo(this.game.camera, 32, 32);
@@ -84,7 +89,9 @@ var MedusaGame = (function () {
         this.map.addTilesetImage('tiles', this.bmd);
         //  Creates a new blank layer and sets the map dimensions.
         //  In this case the map is 40x30 tiles in size and the tiles are 32x32 pixels in size.
-        this.layer = this.map.create('level1', 16, 118, 32, 32);
+        var WIDTH_IN_TILES = 16;
+        var HEIGHT_IN_TILES = 118;
+        this.layer = this.map.create('level1', WIDTH_IN_TILES, HEIGHT_IN_TILES, 32, 32);
         //  Populate some tiles for our player to start on
         var lines = this.readFile("/assets/maps/Map01.txt").split('\n');
         for (var y = 0; y < lines.length; y++) {
@@ -97,6 +104,7 @@ var MedusaGame = (function () {
             }
         }
         this.map.setCollisionByExclusion([0]);
+        this.game.camera.y = this.map.height * this.map.tileHeight;
     };
     MedusaGame.prototype.setupAudio = function () {
         this.volume = .2;
@@ -160,6 +168,9 @@ var MedusaGame = (function () {
         if (target.wasHit) {
             target.wasHit();
         }
+    };
+    MedusaGame.prototype.getScrollStep = function () {
+        return .5;
     };
     return MedusaGame;
 }());

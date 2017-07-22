@@ -17,7 +17,12 @@ var Player = (function () {
             this.sprite.body.velocity.y = -this.playerVelocity;
         }
         else if (this.cursors.down.isDown) {
-            this.sprite.body.velocity.y = this.playerVelocity;
+            //alert(this.game.camera.height);
+            if (this.sprite.body.y <
+                this.medusaGame.game.camera.y + this.game.camera.height
+                    - this.sprite.height) {
+                this.sprite.body.velocity.y = this.playerVelocity;
+            }
         }
         if (this.cursors.left.isDown) {
             this.sprite.body.velocity.x = -this.playerVelocity;
@@ -33,6 +38,11 @@ var Player = (function () {
         else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = true;
         }
+        if (this.sprite.animations.currentAnim.name == 'hit'
+            && this.sprite.animations.currentFrame.index == 0) {
+            this.sprite.animations.play('run');
+        }
+        //this.sprite.body.y -= this.medusaGame.getScrollStep() * 2;
     };
     Player.prototype.setup = function () {
         this.sprite = this.game.add.sprite(this.game.world.centerX - 16, this.game.world.height - 64, 'player');
@@ -44,11 +54,11 @@ var Player = (function () {
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
-        this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+        //this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
     };
     Player.prototype.wasHit = function () {
         this.sprite.animations.play('hit', 10, false);
     };
     return Player;
 }());
-//# sourceMappingURL=player.js.map
+//# sourceMappingURL=Player.js.map

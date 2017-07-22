@@ -25,7 +25,7 @@ var Boss = (function () {
         else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.isWeaponLoaded = true;
         }
-        if (this.sprite.animations.currentAnim.name == 'run'
+        if (this.sprite.animations.currentAnim.name == 'hit'
             && this.sprite.animations.currentFrame.index == 0) {
             this.sprite.animations.play('run');
         }
