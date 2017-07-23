@@ -1,4 +1,22 @@
-﻿class Player {
+﻿/// <reference path="app.ts" />
+/// <reference path="playerState.ts" />
+
+interface IPlayer {
+    velocity: number;
+    sprite: Phaser.Sprite;
+    isWeaponLoaded: boolean;
+
+    wasHit();
+    resurrect();
+    walk();
+    runUp();
+    runDown();
+    runLeft();
+    runRight();
+    shoot();
+}
+
+class Player implements IPlayer {
     medusaGame: MedusaGame;
     game: Phaser.Game;
     cursors: Phaser.CursorKeys;
@@ -6,8 +24,9 @@
     bulletSound: Phaser.Sound;
     sprite: Phaser.Sprite;
     isWeaponLoaded: boolean;
-    playerVelocity: number;
+    velocity: number;
     walkingVelocity: number;
+    state: IPlayerState;
 
     constructor(
         medusaGame: MedusaGame, cursors: Phaser.CursorKeys,
@@ -22,6 +41,7 @@
 
     create() {
         this.isWeaponLoaded = true;
+        this.state = new PlayerStateRunning(this);
     }
 
     update() {
@@ -30,48 +50,7 @@
 
         this.sprite.body.velocity.set(0);
 
-        if (this.sprite.animations.currentAnim.name != 'die') {
-            if (this.cursors.up.isDown) {
-                this.sprite.body.velocity.y = -this.playerVelocity;
-            }
-            else if (this.cursors.down.isDown) {
-                if (this.sprite.body.y <
-                    this.medusaGame.game.camera.y + this.game.camera.height
-                        - this.sprite.height) {
-                    this.sprite.body.velocity.y = this.playerVelocity;
-                }
-            }
-
-            if (this.cursors.left.isDown) {
-                this.sprite.body.velocity.x = -this.playerVelocity;
-            }
-            else if (this.cursors.right.isDown) {
-                this.sprite.body.velocity.x = this.playerVelocity;
-            }
-        }
-
-        if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = false;
-            //this.bulletSound.play();
-            this.medusaGame.firePlayerBullet();
-        }
-        else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = true;
-        }
-
-        if (this.sprite.animations.currentAnim.name == 'hit'
-            && this.sprite.animations.currentFrame.index == 0) {
-            this.sprite.animations.play('run');
-        }
-
-        //if (this.sprite.animations.currentAnim.name == 'die'
-        //    && this.sprite.animations.currentFrame.index == 19) {
-        //    //this.sprite.animations.play('run');
-        //    var deathSound = this.game.add.audio('death');
-        //    deathSound.play();
-        //}
-
-        //this.sprite.body.y -= this.medusaGame.getScrollStep() * 2;
+        this.state.update(this.cursors, this.game.input.keyboard, this.game.camera);
     }
 
     setup() {
@@ -81,20 +60,26 @@
         this.sprite.animations.add('run', [0, 1], 2, true);
         this.sprite.animations.add('die', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 10, true);
         this.sprite.animations.play('run');
-        this.playerVelocity = 150;
+        this.velocity = 150;
         this.walkingVelocity = 60;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
         //this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
     }
+
+    setStrategy(strategy: IPlayerState) {
+        this.state = new PlayerStateRunning(this);
+    }
     
     wasHit() {
         this.sprite.animations.play('die');
+        this.state = new PlayerStateDying(this);
     }
 
     resurrect() {
         this.sprite.animations.play('run');
+        this.state = new PlayerStateRunning(this);
     }
 
     walk() {
@@ -104,5 +89,26 @@
             && !this.cursors.right.isDown) {
             this.sprite.body.velocity.y = - this.walkingVelocity;
         }
+    }
+
+    runUp() {
+        this.sprite.body.velocity.y = -this.velocity;
+    }
+
+    runDown() {
+        this.sprite.body.velocity.y = this.velocity;
+    }
+
+    runLeft() {
+        this.sprite.body.velocity.x = -this.velocity;
+    }
+
+    runRight() {
+        this.sprite.body.velocity.x = this.velocity;
+    }
+
+    shoot() {
+        this.bulletSound.play();
+        this.medusaGame.firePlayerBullet();
     }
 }

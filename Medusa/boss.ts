@@ -33,13 +33,13 @@
             this.player.wasHit(this);
         }.bind(this));
 
-        if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = false;
-            this.bulletSound.play();
-        }
-        else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
-            this.isWeaponLoaded = true;
-        }
+        //if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
+        //    this.isWeaponLoaded = false;
+        //    this.bulletSound.play();
+        //}
+        //else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
+        //    this.isWeaponLoaded = true;
+        //}
 
         if (this.sprite.animations.currentAnim.name == 'hit'
             && this.sprite.animations.currentFrame.index == 0) {
