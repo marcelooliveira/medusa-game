@@ -1,4 +1,5 @@
 ﻿class Enemy {
+    medusaGame: MedusaGame;
     game: Phaser.Game;
     layer: Phaser.TilemapLayer;
     bulletSound: Phaser.Sound;
@@ -11,8 +12,9 @@
     enemyNumber: number;
 
     constructor(
-        game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
+        medusaGame: MedusaGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
         player: Player, x: number, y: number, enemyNumber: number) {
+        this.medusaGame = medusaGame;
         this.game = game;
         this.layer = layer;
         this.bulletSound = bulletSound;
@@ -36,7 +38,7 @@
 
         this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
             //alert('game over');
-            this.player.wasHit(this);
+            this.medusaGame.playerWasHit(this);
             this.sprite.destroy();
         }.bind(this));
 

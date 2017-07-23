@@ -7,6 +7,7 @@
     sprite: Phaser.Sprite;
     isWeaponLoaded: boolean;
     playerVelocity: number;
+    walkingVelocity: number;
 
     constructor(
         medusaGame: MedusaGame, cursors: Phaser.CursorKeys,
@@ -28,23 +29,25 @@
         this.game.physics.arcade.collide(this.sprite, this.layer);
 
         this.sprite.body.velocity.set(0);
-        if (this.cursors.up.isDown) {
-            this.sprite.body.velocity.y = -this.playerVelocity;
-        }
-        else if (this.cursors.down.isDown) {
-            //alert(this.game.camera.height);
-            if (this.sprite.body.y <
-                this.medusaGame.game.camera.y + this.game.camera.height
-                    - this.sprite.height) {
-                this.sprite.body.velocity.y = this.playerVelocity;
-            }
-        }
 
-        if (this.cursors.left.isDown) {
-            this.sprite.body.velocity.x = -this.playerVelocity;
-        }
-        else if (this.cursors.right.isDown) {
-            this.sprite.body.velocity.x = this.playerVelocity;
+        if (this.sprite.animations.currentAnim.name != 'die') {
+            if (this.cursors.up.isDown) {
+                this.sprite.body.velocity.y = -this.playerVelocity;
+            }
+            else if (this.cursors.down.isDown) {
+                if (this.sprite.body.y <
+                    this.medusaGame.game.camera.y + this.game.camera.height
+                        - this.sprite.height) {
+                    this.sprite.body.velocity.y = this.playerVelocity;
+                }
+            }
+
+            if (this.cursors.left.isDown) {
+                this.sprite.body.velocity.x = -this.playerVelocity;
+            }
+            else if (this.cursors.right.isDown) {
+                this.sprite.body.velocity.x = this.playerVelocity;
+            }
         }
 
         if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
@@ -61,6 +64,13 @@
             this.sprite.animations.play('run');
         }
 
+        //if (this.sprite.animations.currentAnim.name == 'die'
+        //    && this.sprite.animations.currentFrame.index == 19) {
+        //    //this.sprite.animations.play('run');
+        //    var deathSound = this.game.add.audio('death');
+        //    deathSound.play();
+        //}
+
         //this.sprite.body.y -= this.medusaGame.getScrollStep() * 2;
     }
 
@@ -69,9 +79,10 @@
         //this.sprite = this.game.add.sprite(this.game.world.centerX - 16, 256, 'player');
 
         this.sprite.animations.add('run', [0, 1], 2, true);
-        this.sprite.animations.add('hit', [2, 3, 2, 3, 2, 3, 2, 3, 0], 10, true);
+        this.sprite.animations.add('die', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 10, true);
         this.sprite.animations.play('run');
         this.playerVelocity = 150;
+        this.walkingVelocity = 60;
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
@@ -79,6 +90,19 @@
     }
     
     wasHit() {
-        this.sprite.animations.play('hit', 10, false);
+        this.sprite.animations.play('die');
+    }
+
+    resurrect() {
+        this.sprite.animations.play('run');
+    }
+
+    walk() {
+        if (!this.cursors.down.isDown
+            && !this.cursors.up.isDown
+            && !this.cursors.left.isDown
+            && !this.cursors.right.isDown) {
+            this.sprite.body.velocity.y = - this.walkingVelocity;
+        }
     }
 }

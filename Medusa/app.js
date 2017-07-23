@@ -13,7 +13,10 @@ var MedusaGame = (function () {
             setupPlayerBullets: this.setupPlayerBullets,
             firePlayerBullet: this.firePlayerBullet,
             playerBulletHit: this.playerBulletHit,
-            getScrollStep: this.getScrollStep
+            getScrollStep: this.getScrollStep,
+            playerWasHit: this.playerWasHit,
+            soundStopped: this.soundStopped,
+            scroll: this.scroll
         });
     }
     MedusaGame.prototype.preload = function () {
@@ -33,6 +36,7 @@ var MedusaGame = (function () {
         this.game.load.spritesheet('enemy11', 'assets/sprites/enemy11.png', 32, 32);
         this.game.load.atlasJSONHash('playerBullet', 'assets/sprites/PlayerBullet1SpriteSheet.png', 'assets/sprites/PlayerBullet1SpriteSheet.json');
         this.game.load.audio('music', ['assets/audio/Level1.mp3']);
+        this.game.load.audio('playerDeath', ['assets/audio/Death.mp3']);
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
     };
     MedusaGame.prototype.create = function () {
@@ -54,10 +58,8 @@ var MedusaGame = (function () {
         this.playerBullets.forEach(function (bullet) {
             bullet.update();
         });
-        if (this.game.camera.y > 0) {
-            this.game.camera.y -= this.getScrollStep();
-            this.player.sprite.body.y -= this.getScrollStep() * 2;
-        }
+        //if (this.game.camera.y > 0) {
+        //}
     };
     MedusaGame.prototype.render = function () {
         this.game.debug.cameraInfo(this.game.camera, 32, 32);
@@ -105,12 +107,15 @@ var MedusaGame = (function () {
         }
         this.map.setCollisionByExclusion([0]);
         this.game.camera.y = this.map.height * this.map.tileHeight;
+        this.game.time.events.add(Phaser.Timer.SECOND, this.scroll.bind(this));
     };
     MedusaGame.prototype.setupAudio = function () {
         this.volume = .2;
-        this.music = this.game.add.audio('music');
-        this.music.volume = this.volume;
-        this.music.play();
+        this.levelMusic = this.game.add.audio('music');
+        this.levelMusic.volume = this.volume;
+        this.levelMusic.play();
+        this.playerDeathSound = this.game.add.audio('playerDeath');
+        this.playerDeathSound.onStop.add(this.soundStopped.bind(this));
         this.bulletSound = this.game.add.audio('bulletSound');
         this.bulletSound.volume = this.volume;
         this.bulletSound.allowMultiple = true;
@@ -133,7 +138,7 @@ var MedusaGame = (function () {
                 var char = line[x];
                 var indexOf = enemycodes.indexOf(char);
                 if (indexOf >= 0) {
-                    var enemy = new Enemy(this.game, this.layer, this.bulletSound, this.player, x * 32, y * 32, indexOf + 1);
+                    var enemy = new Enemy(this, this.game, this.layer, this.bulletSound, this.player, x * 32, y * 32, indexOf + 1);
                     enemy.setup();
                     this.enemies.push(enemy);
                 }
@@ -170,7 +175,23 @@ var MedusaGame = (function () {
         }
     };
     MedusaGame.prototype.getScrollStep = function () {
-        return .5;
+        return 1;
+    };
+    MedusaGame.prototype.playerWasHit = function () {
+        this.levelMusic.stop();
+        this.playerDeathSound.play();
+        this.player.wasHit();
+    };
+    MedusaGame.prototype.soundStopped = function (sound) {
+        if (sound.name == 'playerDeath') {
+            this.levelMusic.play();
+            this.player.resurrect();
+        }
+    };
+    MedusaGame.prototype.scroll = function () {
+        this.game.camera.y -= this.getScrollStep();
+        this.player.walk();
+        this.game.time.events.add(Phaser.Timer.SECOND / 32, this.scroll.bind(this));
     };
     return MedusaGame;
 }());

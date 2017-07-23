@@ -1,5 +1,6 @@
 var Enemy = (function () {
-    function Enemy(game, layer, bulletSound, player, x, y, enemyNumber) {
+    function Enemy(medusaGame, game, layer, bulletSound, player, x, y, enemyNumber) {
+        this.medusaGame = medusaGame;
         this.game = game;
         this.layer = layer;
         this.bulletSound = bulletSound;
@@ -19,7 +20,7 @@ var Enemy = (function () {
         //}.bind(this));
         this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
             //alert('game over');
-            this.player.wasHit(this);
+            this.medusaGame.playerWasHit(this);
             this.sprite.destroy();
         }.bind(this));
         //if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {

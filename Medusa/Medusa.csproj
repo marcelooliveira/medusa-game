@@ -115,6 +115,7 @@
     <Content Include="assets\sprites\PlayerBullet5SpriteSheet.png" />
     <Content Include="assets\sprites\PlayerBullet6SpriteSheet.png" />
     <Content Include="assets\sprites\PlayerBulletSpriteSheet.png" />
+    <Content Include="assets\sprites\PlayerDestructionSpriteSheet.png" />
     <Content Include="game.js" />
     <Content Include="index.html" />
     <Content Include="phaser2.png" />
