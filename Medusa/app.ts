@@ -1,6 +1,10 @@
 ﻿/// <reference path="pixi.d.ts" />
 /// <reference path="p2.d.ts" />
 /// <reference path="player.ts" />
+/// <reference path="boss.ts" />
+/// <reference path="enemy.ts" />
+/// <reference path="playerbullet.ts" />
+/// <reference path="playerstate.ts" />
 
 class MedusaGame {
     game: Phaser.Game;
