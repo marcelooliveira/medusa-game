@@ -1,20 +1,6 @@
-﻿/// <reference path="app.ts" />
-class Enemy {
-    medusaGame: KnightmareGame;
-    game: Phaser.Game;
-    layer: Phaser.TilemapLayer;
-    bulletSound: Phaser.Sound;
-    sprite: Phaser.Sprite;
-    player: Player;
-    isWeaponLoaded: boolean;
-    velocity: number;
-    x: number;
-    y: number;
-    enemyNumber: number;
-
-    constructor(
-        medusaGame: KnightmareGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
-        player: Player, x: number, y: number, enemyNumber: number) {
+/// <reference path="../app.ts" />
+var Enemy = (function () {
+    function Enemy(medusaGame, game, layer, bulletSound, player, x, y, enemyNumber) {
         this.medusaGame = medusaGame;
         this.game = game;
         this.layer = layer;
@@ -25,24 +11,19 @@ class Enemy {
         this.y = y;
         this.enemyNumber = enemyNumber;
     }
-
-    create() {
+    Enemy.prototype.create = function () {
         this.isWeaponLoaded = true;
-    }
-
-    update() {
-
+    };
+    Enemy.prototype.update = function () {
         //this.game.physics.arcade.collide(this.sprite, this.layer, function () {
         //    this.velocity *= -1;
         //    this.sprite.body.velocity.x = this.velocity;
         //}.bind(this));
-
         this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
             //alert('game over');
             this.medusaGame.playerWasHit(this);
             this.sprite.destroy();
         }.bind(this));
-
         //if (this.isWeaponLoaded && this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
         //    this.isWeaponLoaded = false;
         //    this.bulletSound.play();
@@ -50,14 +31,12 @@ class Enemy {
         //else if (!this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
         //    this.isWeaponLoaded = true;
         //}
-
         //if (this.sprite.animations.currentAnim.name == 'run'
         //    && this.sprite.animations.currentFrame.index == 0) {
         //    this.sprite.animations.play('run');
         //}
-    }
-
-    setup() {
+    };
+    Enemy.prototype.setup = function () {
         this.sprite = this.game.add.sprite(this.x, this.y, 'enemy' + this.enemyNumber);
         this.sprite.animations.add('run', [0, 1, 2, 3, 2, 1], 4, true);
         this.sprite.animations.play('run');
@@ -66,9 +45,10 @@ class Enemy {
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
         //this.sprite.body.velocity.x = this.velocity;
-    }
-
-    wasHit() {
+    };
+    Enemy.prototype.wasHit = function () {
         //this.sprite.animations.play('hit', 10, false);
-    }
-}
+    };
+    return Enemy;
+}());
+//# sourceMappingURL=enemy.js.map

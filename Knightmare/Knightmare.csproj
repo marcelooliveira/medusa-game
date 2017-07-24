@@ -118,26 +118,25 @@
     <Content Include="assets\sprites\PlayerBullet6SpriteSheet.png" />
     <Content Include="assets\sprites\PlayerBulletSpriteSheet.png" />
     <Content Include="assets\sprites\PlayerDestructionSpriteSheet.png" />
-    <Content Include="game.js" />
     <Content Include="index.html" />
-    <TypeScriptCompile Include="splash.ts" />
-    <TypeScriptCompile Include="menu.ts" />
-    <Content Include="phaser2.png" />
-    <Content Include="phaser.js" />
-    <Content Include="phaser.min.js" />
+    <TypeScriptCompile Include="gamestates\splash.ts" />
+    <TypeScriptCompile Include="gamestates\menu.ts" />
+    <Content Include="phaser\phaser2.png" />
+    <Content Include="phaser\phaser.js" />
+    <Content Include="phaser\phaser.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
-    <TypeScriptCompile Include="level.ts" />
-    <TypeScriptCompile Include="enemy.ts" />
-    <TypeScriptCompile Include="playerBullet.ts" />
-    <TypeScriptCompile Include="p2.d.ts" />
-    <TypeScriptCompile Include="phaser.d.ts" />
-    <TypeScriptCompile Include="pixi.d.ts" />
-    <TypeScriptCompile Include="boss.ts" />
-    <TypeScriptCompile Include="player.ts" />
-    <TypeScriptCompile Include="playerState.ts" />
+    <TypeScriptCompile Include="gamestates\level.ts" />
+    <TypeScriptCompile Include="enemies\enemy.ts" />
+    <TypeScriptCompile Include="player\playerBullet.ts" />
+    <TypeScriptCompile Include="phaser\p2.d.ts" />
+    <TypeScriptCompile Include="phaser\phaser.d.ts" />
+    <TypeScriptCompile Include="phaser\pixi.d.ts" />
+    <TypeScriptCompile Include="enemies\boss.ts" />
+    <TypeScriptCompile Include="player\player.ts" />
+    <TypeScriptCompile Include="player\playerState.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

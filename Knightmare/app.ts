@@ -1,25 +1,36 @@
-/// <reference path="pixi.d.ts" />
-/// <reference path="p2.d.ts" />
-/// <reference path="player.ts" />
-/// <reference path="boss.ts" />
-/// <reference path="enemy.ts" />
-/// <reference path="playerbullet.ts" />
-/// <reference path="playerstate.ts" />
-/// <reference path="menu.ts" />
-/// <reference path="level.ts" />
-var KnightmareGame = (function () {
-    function KnightmareGame() {
+﻿/// <reference path="enemies/boss.ts" />
+/// <reference path="enemies/enemy.ts" />
+/// <reference path="gamestates/menu.ts" />
+/// <reference path="gamestates/level.ts" />
+/// <reference path="phaser/pixi.d.ts" />
+/// <reference path="phaser/p2.d.ts" />
+/// <reference path="player/player.ts" />
+/// <reference path="player/playerbullet.ts" />
+/// <reference path="player/playerstate.ts" />
+
+class KnightmareGame {
+    game: Phaser.Game;
+    constructor() {
         this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
             update: this.update
         });
     }
-    KnightmareGame.prototype.preload = function () {
+
+    preload() {
         this.game.load.spritesheet('menu', 'assets/backgrounds/menu.png', 512, 384);
         this.game.load.spritesheet('splash01', 'assets/backgrounds/splash01.png', 512, 384);
-        this.game.load.script('menu', 'menu.js');
-        this.game.load.script('splash01', 'splash.js');
-        this.game.load.script('level1', 'level.js');
+
+        this.game.load.script('menu', 'gamestates/menu.js');
+        this.game.load.script('splash01', 'gamestates/splash.js')
+        this.game.load.script('level1', 'gamestates/level.js');
+
+        this.game.load.script('player', 'player.js');
+        this.game.load.script('boss', 'boss.js');
+        this.game.load.script('enemy', 'enemy.js');
+        this.game.load.script('playerBullet', 'playerBullet.js');
+        this.game.load.script('playerState', 'playerState.js');
+
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 32, 32);
         this.game.load.spritesheet('boss', 'assets/sprites/boss.png', 96, 96);
@@ -38,20 +49,24 @@ var KnightmareGame = (function () {
         this.game.load.audio('music', ['assets/audio/Level1.mp3']);
         this.game.load.audio('playerDeath', ['assets/audio/Death.mp3']);
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
-    };
-    KnightmareGame.prototype.create = function () {
+    }
+
+    create() {
         this.game.state.add('menu', Menu);
         this.game.state.add('level1', Level1);
         this.game.state.add('splash01', Splash01);
         this.game.state.start('menu');
-    };
-    KnightmareGame.prototype.update = function () {
-    };
-    KnightmareGame.prototype.render = function () {
-    };
-    return KnightmareGame;
-}());
-window.onload = function () {
+    }
+
+    update() {
+    }
+
+    render() {
+    }
+}
+
+window.onload = () => {
+
     var game = new KnightmareGame();
+
 };
-//# sourceMappingURL=app.js.map

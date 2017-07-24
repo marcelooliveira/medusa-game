@@ -1,10 +1,10 @@
-﻿/// <reference path="pixi.d.ts" />
-/// <reference path="p2.d.ts" />
-/// <reference path="player.ts" />
-/// <reference path="boss.ts" />
-/// <reference path="enemy.ts" />
-/// <reference path="playerbullet.ts" />
-/// <reference path="playerstate.ts" />
+﻿/// <reference path="../enemies/boss.ts" />
+/// <reference path="../enemies/enemy.ts" />
+/// <reference path="../phaser/pixi.d.ts" />
+/// <reference path="../phaser/p2.d.ts" />
+/// <reference path="../player/player.ts" />
+/// <reference path="../player/playerbullet.ts" />
+/// <reference path="../player/playerstate.ts" />
 
 class Level1 extends Phaser.State {
     game: Phaser.Game;
@@ -21,43 +21,8 @@ class Level1 extends Phaser.State {
     playerDeathSound: Phaser.Sound;
     bulletSound: Phaser.Sound;
     volume: number;
-    //constructor() {
-    //    this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
-    //        create: this.create, preload: this.preload,
-    //        update: this.update, readFile: this.readFile,
-    //        setupMap: this.setupMap, setupPlayer: this.setupPlayer,
-    //        setupBoss: this.setupBoss, setupEnemies: this.setupEnemies,
-    //        playerBullets: this.playerBullets,
-    //        setupAudio: this.setupAudio, setupKeyboard: this.setupKeyboard,
-    //        setupPlayerBullets: this.setupPlayerBullets,
-    //        firePlayerBullet: this.firePlayerBullet,
-    //        playerBulletHit: this.playerBulletHit,
-    //        getScrollStep: this.getScrollStep,
-    //        playerWasHit: this.playerWasHit,
-    //        soundStopped: this.soundStopped,
-    //        scroll: this.scroll
-    //    });
-    //}
 
     preload() { 
-        //this.game.load.image('level', 'assets/backgrounds/level01.jpg');
-        //this.game.load.spritesheet('player', 'assets/sprites/player.png', 32, 32);
-        //this.game.load.spritesheet('boss', 'assets/sprites/boss.png', 96, 96);
-        //this.game.load.spritesheet('enemy1', 'assets/sprites/enemy1.png', 32, 32);
-        //this.game.load.spritesheet('enemy2', 'assets/sprites/enemy2.png', 32, 32);
-        //this.game.load.spritesheet('enemy3', 'assets/sprites/enemy3.png', 32, 32);
-        //this.game.load.spritesheet('enemy4', 'assets/sprites/enemy4.png', 32, 32);
-        //this.game.load.spritesheet('enemy5', 'assets/sprites/enemy5.png', 32, 32);
-        //this.game.load.spritesheet('enemy6', 'assets/sprites/enemy6.png', 32, 32);
-        //this.game.load.spritesheet('enemy7', 'assets/sprites/enemy7.png', 32, 32);
-        //this.game.load.spritesheet('enemy8', 'assets/sprites/enemy8.png', 32, 32);
-        //this.game.load.spritesheet('enemy9', 'assets/sprites/enemy9.png', 32, 32);
-        //this.game.load.spritesheet('enemy10', 'assets/sprites/enemy10.png', 32, 32);
-        //this.game.load.spritesheet('enemy11', 'assets/sprites/enemy11.png', 32, 32);
-        //this.game.load.atlasJSONHash('playerBullet', 'assets/sprites/PlayerBullet1SpriteSheet.png', 'assets/sprites/PlayerBullet1SpriteSheet.json');
-        //this.game.load.audio('music', ['assets/audio/Level1.mp3']);
-        //this.game.load.audio('playerDeath', ['assets/audio/Death.mp3']);
-        //this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
     }
 
     create() {
@@ -80,13 +45,9 @@ class Level1 extends Phaser.State {
         this.playerBullets.forEach(bullet => {
             bullet.update();
         });
-
-        //if (this.game.camera.y > 0) {
-        //}
     }
 
     render() {
-        //this.game.debug.cameraInfo(this.game.camera, 32, 32);
     }
 
     readFile(file: string) : string {
@@ -241,9 +202,6 @@ class Level1 extends Phaser.State {
     soundStopped(sound: Phaser.Sound) {
         if (sound.name == 'playerDeath') {
             this.game.state.start('splash01');
-
-            //this.levelMusic.play();
-            //this.player.resurrect();
         }
     }
 
@@ -253,9 +211,3 @@ class Level1 extends Phaser.State {
         this.game.time.events.add(Phaser.Timer.SECOND / 32, this.scroll.bind(this));
     }
 }
-
-//window.onload = () => {
-
-//    var game = new Level1();
-
-//};
