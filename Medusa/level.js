@@ -196,14 +196,17 @@ var Level1 = (function (_super) {
         return 1;
     };
     Level1.prototype.playerWasHit = function () {
-        this.levelMusic.stop();
-        this.playerDeathSound.play();
-        this.player.wasHit();
+        if (this.player.sprite.animations.currentAnim.name == 'run') {
+            this.levelMusic.stop();
+            this.playerDeathSound.play();
+            this.player.wasHit();
+        }
     };
     Level1.prototype.soundStopped = function (sound) {
         if (sound.name == 'playerDeath') {
-            this.levelMusic.play();
-            this.player.resurrect();
+            this.game.state.start('splash01');
+            //this.levelMusic.play();
+            //this.player.resurrect();
         }
     };
     Level1.prototype.scroll = function () {

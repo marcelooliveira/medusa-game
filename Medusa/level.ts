@@ -231,15 +231,19 @@ class Level1 extends Phaser.State {
     }
 
     playerWasHit() {
-        this.levelMusic.stop();
-        this.playerDeathSound.play();
-        this.player.wasHit();
+        if (this.player.sprite.animations.currentAnim.name == 'run') {
+            this.levelMusic.stop();
+            this.playerDeathSound.play();
+            this.player.wasHit();
+        }
     }
 
     soundStopped(sound: Phaser.Sound) {
         if (sound.name == 'playerDeath') {
-            this.levelMusic.play();
-            this.player.resurrect();
+            this.game.state.start('splash01');
+
+            //this.levelMusic.play();
+            //this.player.resurrect();
         }
     }
 

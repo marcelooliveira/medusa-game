@@ -16,7 +16,9 @@ var KnightmareGame = (function () {
     }
     KnightmareGame.prototype.preload = function () {
         this.game.load.spritesheet('menu', 'assets/backgrounds/menu.png', 512, 384);
+        this.game.load.spritesheet('splash01', 'assets/backgrounds/splash01.png', 512, 384);
         this.game.load.script('menu', 'menu.js');
+        this.game.load.script('splash01', 'splash.js');
         this.game.load.script('level1', 'level.js');
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 32, 32);
@@ -40,6 +42,7 @@ var KnightmareGame = (function () {
     KnightmareGame.prototype.create = function () {
         this.game.state.add('menu', Menu);
         this.game.state.add('level1', Level1);
+        this.game.state.add('splash01', Splash01);
         this.game.state.start('menu');
     };
     KnightmareGame.prototype.update = function () {
