@@ -1,7 +1,7 @@
 var PlayerBullet = (function () {
-    function PlayerBullet(medusaGame, layer, bulletSound, player, boss) {
-        this.medusaGame = medusaGame;
-        this.game = medusaGame.game;
+    function PlayerBullet(level, layer, bulletSound, player, boss) {
+        this.level = level;
+        this.game = level.game;
         this.layer = layer;
         this.bulletSound = bulletSound;
         this.player = player;
@@ -20,12 +20,12 @@ var PlayerBullet = (function () {
             this.sprite.destroy();
         }
         this.game.physics.arcade.collide(this.sprite, this.boss.sprite, function () {
-            this.medusaGame.playerBulletHit(this, this.boss);
+            this.level.playerBulletHit(this, this.boss);
             this.sprite.destroy();
         }.bind(this));
-        this.medusaGame.enemies.forEach(function (enemy) {
+        this.level.enemies.forEach(function (enemy) {
             _this.game.physics.arcade.collide(_this.sprite, enemy.sprite, function () {
-                this.medusaGame.playerBulletHit(this, enemy);
+                this.level.playerBulletHit(this, enemy);
                 this.sprite.destroy();
                 enemy.sprite.destroy();
             }.bind(_this));
@@ -41,4 +41,4 @@ var PlayerBullet = (function () {
     };
     return PlayerBullet;
 }());
-//# sourceMappingURL=playerBullet.js.map
+//# sourceMappingURL=playerbullet.js.map

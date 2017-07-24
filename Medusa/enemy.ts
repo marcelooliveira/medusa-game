@@ -1,5 +1,6 @@
-﻿class Enemy {
-    medusaGame: MedusaGame;
+﻿/// <reference path="app.ts" />
+class Enemy {
+    medusaGame: KnightmareGame;
     game: Phaser.Game;
     layer: Phaser.TilemapLayer;
     bulletSound: Phaser.Sound;
@@ -12,7 +13,7 @@
     enemyNumber: number;
 
     constructor(
-        medusaGame: MedusaGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
+        medusaGame: KnightmareGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
         player: Player, x: number, y: number, enemyNumber: number) {
         this.medusaGame = medusaGame;
         this.game = game;

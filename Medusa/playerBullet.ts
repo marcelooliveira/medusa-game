@@ -1,5 +1,5 @@
 ﻿class PlayerBullet {
-    medusaGame: MedusaGame;
+    level: Level1;
     game: Phaser.Game;
     layer: Phaser.TilemapLayer;
     bulletSound: Phaser.Sound;
@@ -10,10 +10,10 @@
     velocity: number;
 
     constructor(
-        medusaGame: MedusaGame, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
+        level: Level1, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
         player: Player, boss: Boss) {
-        this.medusaGame = medusaGame;
-        this.game = medusaGame.game;
+        this.level = level;
+        this.game = level.game;
         this.layer = layer;
         this.bulletSound = bulletSound;
         this.player = player;
@@ -36,13 +36,13 @@
         }
 
         this.game.physics.arcade.collide(this.sprite, this.boss.sprite, function () {
-            this.medusaGame.playerBulletHit(this, this.boss);
+            this.level.playerBulletHit(this, this.boss);
             this.sprite.destroy();
         }.bind(this));
 
-        this.medusaGame.enemies.forEach(enemy => {
+        this.level.enemies.forEach(enemy => {
             this.game.physics.arcade.collide(this.sprite, enemy.sprite, function () {
-                this.medusaGame.playerBulletHit(this, enemy);
+                this.level.playerBulletHit(this, enemy);
                 this.sprite.destroy();  
                 enemy.sprite.destroy();  
             }.bind(this));

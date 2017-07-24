@@ -1,9 +1,9 @@
 /// <reference path="app.ts" />
 /// <reference path="playerState.ts" />
 var Player = (function () {
-    function Player(medusaGame, cursors, layer, bulletSound) {
-        this.medusaGame = medusaGame;
-        this.game = medusaGame.game;
+    function Player(level, cursors, layer, bulletSound) {
+        this.level = level;
+        this.game = level.game;
         this.cursors = cursors;
         this.layer = layer;
         this.bulletSound = bulletSound;
@@ -64,8 +64,8 @@ var Player = (function () {
     };
     Player.prototype.shoot = function () {
         this.bulletSound.play();
-        this.medusaGame.firePlayerBullet();
+        this.level.firePlayerBullet();
     };
     return Player;
 }());
-//# sourceMappingURL=Player.js.map
+//# sourceMappingURL=player.js.map

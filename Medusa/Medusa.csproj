@@ -78,6 +78,7 @@
     <Content Include="assets\audio\TheEnd.mp3" />
     <Content Include="assets\audio\unpause.mp3" />
     <Content Include="assets\audio\Weapon.wav" />
+    <Content Include="assets\backgrounds\menu.png" />
     <Content Include="assets\maps\Map01.txt" />
     <Content Include="assets\sprites\boss.png" />
     <Content Include="assets\sprites\enemy10.png" />
@@ -118,6 +119,7 @@
     <Content Include="assets\sprites\PlayerDestructionSpriteSheet.png" />
     <Content Include="game.js" />
     <Content Include="index.html" />
+    <TypeScriptCompile Include="menu.ts" />
     <Content Include="phaser2.png" />
     <Content Include="phaser.js" />
     <Content Include="phaser.min.js" />
@@ -125,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="level.ts" />
     <TypeScriptCompile Include="enemy.ts" />
     <TypeScriptCompile Include="playerBullet.ts" />
     <TypeScriptCompile Include="p2.d.ts" />

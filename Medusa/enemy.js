@@ -1,3 +1,4 @@
+/// <reference path="app.ts" />
 var Enemy = (function () {
     function Enemy(medusaGame, game, layer, bulletSound, player, x, y, enemyNumber) {
         this.medusaGame = medusaGame;

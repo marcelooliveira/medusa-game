@@ -17,7 +17,7 @@ interface IPlayer {
 }
 
 class Player implements IPlayer {
-    medusaGame: MedusaGame;
+    level: Level1;
     game: Phaser.Game;
     cursors: Phaser.CursorKeys;
     layer: Phaser.TilemapLayer;
@@ -29,10 +29,10 @@ class Player implements IPlayer {
     state: IPlayerState;
 
     constructor(
-        medusaGame: MedusaGame, cursors: Phaser.CursorKeys,
+        level: Level1, cursors: Phaser.CursorKeys,
         layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound) {
-        this.medusaGame = medusaGame;
-        this.game = medusaGame.game;
+        this.level = level;
+        this.game = level.game;
         this.cursors = cursors;
         this.layer = layer;
         this.bulletSound = bulletSound;
@@ -109,6 +109,6 @@ class Player implements IPlayer {
 
     shoot() {
         this.bulletSound.play();
-        this.medusaGame.firePlayerBullet();
+        this.level.firePlayerBullet();
     }
 }
