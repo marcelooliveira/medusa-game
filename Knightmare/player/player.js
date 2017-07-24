@@ -37,7 +37,7 @@ var Player = (function () {
         this.state = new PlayerStateDying(this);
     };
     Player.prototype.resurrect = function () {
-        this.sprite.animations.play('run');
+        this.sprite.animations.play('walk');
         this.state = new PlayerStateRunning(this);
     };
     Player.prototype.walk = function () {

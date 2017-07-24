@@ -23,6 +23,7 @@ class PlayerStateRunning implements IPlayerState {
         if (cursors.left.isDown) {
             this.player.runLeft();
         }
+
         else if (cursors.right.isDown) {
             this.player.runRight();
         }

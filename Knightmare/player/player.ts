@@ -76,7 +76,7 @@ class Player implements IPlayer {
     }
 
     resurrect() {
-        this.sprite.animations.play('run');
+        this.sprite.animations.play('walk');
         this.state = new PlayerStateRunning(this);
     }
 
