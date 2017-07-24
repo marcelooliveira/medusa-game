@@ -157,12 +157,19 @@ var Level1 = (function (_super) {
     Level1.prototype.getScrollStep = function () {
         return 1;
     };
-    Level1.prototype.playerWasHit = function () {
+    Level1.prototype.playerWasHit = function (enemy) {
+        var _this = this;
         if (this.player.sprite.animations.currentAnim.name == 'run') {
             this.levelMusic.stop();
             this.playerDeathSound.play();
             this.player.wasHit();
         }
+        this.enemies.forEach(function (e, i) {
+            if (e === enemy) {
+                _this.enemies.splice(i, 1);
+                return true;
+            }
+        });
     };
     Level1.prototype.soundStopped = function (sound) {
         if (sound.name == 'playerDeath') {
@@ -171,7 +178,9 @@ var Level1 = (function (_super) {
     };
     Level1.prototype.scroll = function () {
         this.game.camera.y -= this.getScrollStep();
-        this.player.walk();
+        if (this.player.state instanceof PlayerStateRunning) {
+            this.player.walk();
+        }
         this.game.time.events.add(Phaser.Timer.SECOND / 32, this.scroll.bind(this));
     };
     return Level1;

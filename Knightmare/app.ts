@@ -25,11 +25,11 @@ class KnightmareGame {
         this.game.load.script('splash01', 'gamestates/splash.js')
         this.game.load.script('level1', 'gamestates/level.js');
 
-        this.game.load.script('player', 'player.js');
-        this.game.load.script('boss', 'boss.js');
-        this.game.load.script('enemy', 'enemy.js');
-        this.game.load.script('playerBullet', 'playerBullet.js');
-        this.game.load.script('playerState', 'playerState.js');
+        this.game.load.script('player', 'player/player.js');
+        this.game.load.script('playerBullet', 'player/playerBullet.js');
+        this.game.load.script('playerState', 'player/playerState.js');
+        this.game.load.script('boss', 'enemies/boss.js');
+        this.game.load.script('enemy', 'enemies/enemy.js');
 
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 32, 32);

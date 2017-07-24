@@ -191,12 +191,19 @@ class Level1 extends Phaser.State {
         return 1;
     }
 
-    playerWasHit() {
+    playerWasHit(enemy) {
         if (this.player.sprite.animations.currentAnim.name == 'run') {
             this.levelMusic.stop();
             this.playerDeathSound.play();
             this.player.wasHit();
         }
+
+        this.enemies.forEach((e, i) => {
+            if (e === enemy) {
+                this.enemies.splice(i, 1);
+                return true;
+            }
+        });
     }
 
     soundStopped(sound: Phaser.Sound) {
@@ -207,7 +214,9 @@ class Level1 extends Phaser.State {
 
     scroll() {
         this.game.camera.y -= this.getScrollStep();
-        this.player.walk();
+        if (this.player.state instanceof PlayerStateRunning) {
+            this.player.walk();
+        }
         this.game.time.events.add(Phaser.Timer.SECOND / 32, this.scroll.bind(this));
     }
 }
