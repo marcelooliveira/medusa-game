@@ -46,9 +46,14 @@ class KnightmareGame {
         this.game.load.spritesheet('enemy10', 'assets/sprites/enemy10.png', 32, 32);
         this.game.load.spritesheet('enemy11', 'assets/sprites/enemy11.png', 32, 32);
         this.game.load.atlasJSONHash('playerBullet', 'assets/sprites/PlayerBullet1SpriteSheet.png', 'assets/sprites/PlayerBullet1SpriteSheet.json');
+
+        this.game.load.audio('start', ['assets/audio/Start.mp3']);
+        this.game.load.audio('intro', ['assets/audio/Intro.mp3']);
         this.game.load.audio('music', ['assets/audio/Level1.mp3']);
         this.game.load.audio('playerDeath', ['assets/audio/Death.mp3']);
         this.game.load.audio('bulletSound', ['assets/audio/PlayerBullet1Shooting.wav']);
+
+        this.game.load.bitmapFont('konami', 'assets/fonts/konami_0.png', 'assets/fonts/konami.xml');
     }
 
     create() {

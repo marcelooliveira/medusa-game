@@ -11,11 +11,22 @@ var __extends = (this && this.__extends) || (function () {
 var Splash01 = (function (_super) {
     __extends(Splash01, _super);
     function Splash01() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        Splash01.firstTime = true;
+        return _this;
     }
     Splash01.prototype.create = function () {
         this.game.add.sprite(0, 0, 'splash01');
-        this.game.time.events.add(Phaser.Timer.SECOND, this.resumeGame, this);
+        if (Splash01.firstTime) {
+            Splash01.firstTime = false;
+            this.introSound = this.game.add.audio('intro');
+            this.introSound.volume = .2;
+            this.introSound.onStop.add(this.resumeGame.bind(this));
+            this.introSound.play();
+        }
+        else {
+            this.game.time.events.add(Phaser.Timer.SECOND, this.resumeGame, this);
+        }
     };
     Splash01.prototype.resumeGame = function () {
         this.game.state.start('level1');

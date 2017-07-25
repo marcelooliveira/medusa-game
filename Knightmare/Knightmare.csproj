@@ -59,7 +59,7 @@
     <Content Include="assets\audio\Bonus.mp3" />
     <Content Include="assets\audio\BossTheme.mp3" />
     <Content Include="assets\audio\BulletShooting.wav" />
-    <Content Include="assets\audio\Combo.mp3" />
+    <Content Include="assets\audio\Start.mp3" />
     <Content Include="assets\audio\Death.mp3" />
     <Content Include="assets\audio\FinishLevel.mp3" />
     <Content Include="assets\audio\Fire.mp3" />
@@ -80,6 +80,8 @@
     <Content Include="assets\audio\Weapon.wav" />
     <Content Include="assets\backgrounds\menu.png" />
     <Content Include="assets\backgrounds\splash01.png" />
+    <Content Include="assets\fonts\konami.xml" />
+    <Content Include="assets\fonts\konami_0.png" />
     <Content Include="assets\maps\Map01.txt" />
     <Content Include="assets\sprites\boss.png" />
     <Content Include="assets\sprites\enemy10.png" />
