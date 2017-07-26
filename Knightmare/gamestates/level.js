@@ -18,7 +18,10 @@ var __extends = (this && this.__extends) || (function () {
 var Level1 = (function (_super) {
     __extends(Level1, _super);
     function Level1() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.WINDOW_WIDTH = 512;
+        _this.WINDOW_HEIGHT = 356;
+        return _this;
     }
     Level1.prototype.preload = function () {
     };
@@ -71,9 +74,10 @@ var Level1 = (function (_super) {
         this.map.addTilesetImage('tiles', this.bmd);
         //  Creates a new blank layer and sets the map dimensions.
         //  In this case the map is 40x30 tiles in size and the tiles are 32x32 pixels in size.
-        var WIDTH_IN_TILES = 16;
-        var HEIGHT_IN_TILES = 118;
-        this.layer = this.map.create('level1', WIDTH_IN_TILES, HEIGHT_IN_TILES, 32, 32);
+        this.WIDTH_IN_TILES = 16;
+        this.HEIGHT_IN_TILES = 118;
+        this.TILE_SIZE = 32;
+        this.layer = this.map.create('level1', this.WIDTH_IN_TILES, this.HEIGHT_IN_TILES, this.TILE_SIZE, this.TILE_SIZE);
         //  Populate some tiles for our player to start on
         var lines = this.readFile("/assets/maps/Map01.txt").split('\n');
         for (var y = 0; y < lines.length; y++) {
@@ -119,7 +123,7 @@ var Level1 = (function (_super) {
                 var indexOf = enemycodes.indexOf(char);
                 if (indexOf >= 0) {
                     var enemy = new Enemy(this, this.game, this.layer, this.bulletSound, this.player, x * 32, y * 32, indexOf + 1);
-                    enemy.setup();
+                    //enemy.setup();
                     this.enemies.push(enemy);
                 }
             }
@@ -179,9 +183,30 @@ var Level1 = (function (_super) {
     Level1.prototype.scroll = function () {
         this.game.camera.y -= this.getScrollStep();
         if (this.player.state instanceof PlayerStateRunning) {
-            this.player.walk();
+            this.player.state.walk(this.game.camera);
         }
         this.game.time.events.add(Phaser.Timer.SECOND / 32, this.scroll.bind(this));
+        this.setupAppearingEnemies();
+        this.teardownDisappearingEnemies();
+    };
+    Level1.prototype.setupAppearingEnemies = function () {
+        var _this = this;
+        this.enemies.forEach(function (e) {
+            if (e.sprite === undefined
+                && e.y > _this.game.camera.y - e.size * 4) {
+                e.setup();
+            }
+        });
+    };
+    Level1.prototype.teardownDisappearingEnemies = function () {
+        var _this = this;
+        this.enemies.forEach(function (e, i) {
+            if (e.sprite !== undefined
+                && e.y > _this.game.camera.y + _this.WINDOW_HEIGHT) {
+                _this.enemies.splice(i, 1);
+                e.teardown();
+            }
+        });
     };
     return Level1;
 }(Phaser.State));

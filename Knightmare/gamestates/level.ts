@@ -21,6 +21,17 @@ class Level1 extends Phaser.State {
     playerDeathSound: Phaser.Sound;
     bulletSound: Phaser.Sound;
     volume: number;
+    WINDOW_WIDTH: number;
+    WINDOW_HEIGHT: number;
+    WIDTH_IN_TILES: number;
+    HEIGHT_IN_TILES: number;
+    TILE_SIZE: number;
+
+    constructor() {
+        super();
+        this.WINDOW_WIDTH = 512;
+        this.WINDOW_HEIGHT = 356;
+    }
 
     preload() { 
     }
@@ -86,9 +97,10 @@ class Level1 extends Phaser.State {
 
         //  Creates a new blank layer and sets the map dimensions.
         //  In this case the map is 40x30 tiles in size and the tiles are 32x32 pixels in size.
-        var WIDTH_IN_TILES = 16;
-        var HEIGHT_IN_TILES = 118;
-        this.layer = this.map.create('level1', WIDTH_IN_TILES, HEIGHT_IN_TILES, 32, 32);
+        this.WIDTH_IN_TILES = 16;
+        this.HEIGHT_IN_TILES = 118;
+        this.TILE_SIZE = 32;
+        this.layer = this.map.create('level1', this.WIDTH_IN_TILES, this.HEIGHT_IN_TILES, this.TILE_SIZE, this.TILE_SIZE);
 
         //  Populate some tiles for our player to start on
 
@@ -145,7 +157,7 @@ class Level1 extends Phaser.State {
                 var indexOf = enemycodes.indexOf(char);
                 if (indexOf >= 0) {
                     var enemy = new Enemy(this, this.game, this.layer, this.bulletSound, this.player, x * 32, y * 32, indexOf + 1);
-                    enemy.setup();
+                    //enemy.setup();
                     this.enemies.push(enemy);
                 }
             }
@@ -215,8 +227,30 @@ class Level1 extends Phaser.State {
     scroll() {
         this.game.camera.y -= this.getScrollStep();
         if (this.player.state instanceof PlayerStateRunning) {
-            this.player.walk();
+            this.player.state.walk(this.game.camera);
         }
         this.game.time.events.add(Phaser.Timer.SECOND / 32, this.scroll.bind(this));
+
+        this.setupAppearingEnemies();
+        this.teardownDisappearingEnemies();
+    }
+
+    setupAppearingEnemies() {
+        this.enemies.forEach(e => {
+            if (e.sprite === undefined
+                && e.y > this.game.camera.y - e.size * 4) {
+                e.setup();
+            }
+        });
+    }
+
+    teardownDisappearingEnemies() {
+        this.enemies.forEach((e, i) => {
+            if (e.sprite !== undefined
+                && e.y > this.game.camera.y + this.WINDOW_HEIGHT) {
+                this.enemies.splice(i, 1);
+                e.teardown();
+            }
+        });
     }
 }

@@ -10,6 +10,7 @@ class Enemy {
     velocity: number;
     x: number;
     y: number;
+    size: number;
     enemyNumber: number;
 
     constructor(
@@ -23,6 +24,7 @@ class Enemy {
         this.create();
         this.x = x;
         this.y = y;
+        this.size = 32;
         this.enemyNumber = enemyNumber;
         this.velocity = 16;
     }
@@ -32,13 +34,15 @@ class Enemy {
     }
 
     update() {
-        if (this.sprite.inCamera) {
-            this.sprite.body.velocity.y = this.velocity;
+        if (this.sprite !== undefined) {
+            if (this.sprite.inCamera) {
+                this.sprite.body.velocity.y = this.velocity;
+            }
+            this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
+                this.knightmareGame.playerWasHit(this);
+                this.sprite.destroy();
+            }.bind(this));
         }
-        this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
-            this.knightmareGame.playerWasHit(this);
-            this.sprite.destroy();
-        }.bind(this));
     }
 
     setup() {
@@ -48,6 +52,13 @@ class Enemy {
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
+    }
+
+    teardown() {
+        if (this.sprite !== undefined) {
+            this.sprite.animations.destroy();
+            this.sprite.destroy();
+        }
     }
 
     wasHit() {

@@ -13,9 +13,7 @@ class PlayerStateRunning implements IPlayerState {
             this.player.runUp();
         }
         else if (cursors.down.isDown) {
-            if (this.player.sprite.body.y <
-                camera.y + camera.height
-                - this.player.sprite.height) {
+            if (this.player.inScene(camera)) {
                 this.player.runDown();
             }
         }
@@ -35,6 +33,12 @@ class PlayerStateRunning implements IPlayerState {
         else if (!keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.player.isWeaponLoaded = true;
         }
+    }
+
+    walk(camera: Phaser.Camera) {
+        //if (this.player.inScene(camera)) {
+            this.player.walk();
+        //}
     }
 }
 

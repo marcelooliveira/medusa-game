@@ -64,6 +64,11 @@ var Player = (function () {
         this.bulletSound.play();
         this.level.firePlayerBullet();
     };
+    Player.prototype.inScene = function (camera) {
+        return this.sprite.body.y <
+            camera.y + camera.height
+                - this.sprite.height;
+    };
     return Player;
 }());
 //# sourceMappingURL=player.js.map

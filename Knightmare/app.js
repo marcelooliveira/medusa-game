@@ -9,7 +9,9 @@
 /// <reference path="player/playerstate.ts" />
 var KnightmareGame = (function () {
     function KnightmareGame() {
-        this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
+        this.WINDOW_WIDTH = 512;
+        this.WINDOW_HEIGHT = 512;
+        this.game = new Phaser.Game(this.WINDOW_WIDTH, this.WINDOW_HEIGHT, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
             update: this.update
         });
@@ -51,7 +53,8 @@ var KnightmareGame = (function () {
         this.game.state.add('menu', Menu);
         this.game.state.add('level1', Level1);
         this.game.state.add('splash01', Splash01);
-        this.game.state.start('menu');
+        //this.game.state.start('menu');
+        this.game.state.start('level1');
     };
     KnightmareGame.prototype.update = function () {
     };

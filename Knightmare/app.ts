@@ -10,8 +10,12 @@
 
 class KnightmareGame {
     game: Phaser.Game;
+    WINDOW_WIDTH: number;
+    WINDOW_HEIGHT: number;
     constructor() {
-        this.game = new Phaser.Game(512, 512, Phaser.AUTO, 'content', {
+        this.WINDOW_WIDTH = 512;
+        this.WINDOW_HEIGHT = 512;
+        this.game = new Phaser.Game(this.WINDOW_WIDTH, this.WINDOW_HEIGHT, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
             update: this.update
         });
@@ -60,7 +64,8 @@ class KnightmareGame {
         this.game.state.add('menu', Menu);
         this.game.state.add('level1', Level1);
         this.game.state.add('splash01', Splash01);
-        this.game.state.start('menu');
+        //this.game.state.start('menu');
+        this.game.state.start('level1');
     }
 
     update() {

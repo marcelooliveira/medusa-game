@@ -14,6 +14,7 @@ interface IPlayer {
     runLeft();
     runRight();
     shoot();
+    inScene(camera: Phaser.Camera);
 }
 
 class Player implements IPlayer {
@@ -85,7 +86,7 @@ class Player implements IPlayer {
             && !this.cursors.up.isDown
             && !this.cursors.left.isDown
             && !this.cursors.right.isDown) {
-            this.sprite.body.velocity.y = - this.walkingVelocity;
+            this.sprite.body.velocity.y = -this.walkingVelocity;
         }
     }
 
@@ -108,5 +109,11 @@ class Player implements IPlayer {
     shoot() {
         this.bulletSound.play();
         this.level.firePlayerBullet();
+    }
+
+    inScene(camera: Phaser.Camera): boolean {
+        return this.sprite.body.y <
+            camera.y + camera.height
+            - this.sprite.height;
     }
 }

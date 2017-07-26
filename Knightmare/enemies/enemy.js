@@ -9,6 +9,7 @@ var Enemy = (function () {
         this.create();
         this.x = x;
         this.y = y;
+        this.size = 32;
         this.enemyNumber = enemyNumber;
         this.velocity = 16;
     }
@@ -16,13 +17,15 @@ var Enemy = (function () {
         this.isWeaponLoaded = true;
     };
     Enemy.prototype.update = function () {
-        if (this.sprite.inCamera) {
-            this.sprite.body.velocity.y = this.velocity;
+        if (this.sprite !== undefined) {
+            if (this.sprite.inCamera) {
+                this.sprite.body.velocity.y = this.velocity;
+            }
+            this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
+                this.knightmareGame.playerWasHit(this);
+                this.sprite.destroy();
+            }.bind(this));
         }
-        this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
-            this.knightmareGame.playerWasHit(this);
-            this.sprite.destroy();
-        }.bind(this));
     };
     Enemy.prototype.setup = function () {
         this.sprite = this.game.add.sprite(this.x, this.y, 'enemy' + this.enemyNumber);
@@ -31,6 +34,12 @@ var Enemy = (function () {
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.setSize(32, 32, 0, 0);
+    };
+    Enemy.prototype.teardown = function () {
+        if (this.sprite !== undefined) {
+            this.sprite.animations.destroy();
+            this.sprite.destroy();
+        }
     };
     Enemy.prototype.wasHit = function () {
         //this.sprite.animations.play('hit', 10, false);

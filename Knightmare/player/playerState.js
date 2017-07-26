@@ -7,9 +7,7 @@ var PlayerStateRunning = (function () {
             this.player.runUp();
         }
         else if (cursors.down.isDown) {
-            if (this.player.sprite.body.y <
-                camera.y + camera.height
-                    - this.player.sprite.height) {
+            if (this.player.inScene(camera)) {
                 this.player.runDown();
             }
         }
@@ -26,6 +24,11 @@ var PlayerStateRunning = (function () {
         else if (!keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
             this.player.isWeaponLoaded = true;
         }
+    };
+    PlayerStateRunning.prototype.walk = function (camera) {
+        //if (this.player.inScene(camera)) {
+        this.player.walk();
+        //}
     };
     return PlayerStateRunning;
 }());
