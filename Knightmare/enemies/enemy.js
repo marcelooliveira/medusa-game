@@ -19,8 +19,10 @@ var EnemyA = (function (_super) {
 }(BaseEnemy));
 var EnemyB = (function (_super) {
     __extends(EnemyB, _super);
-    function EnemyB() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function EnemyB(knightmareGame, game, layer, bulletSound, player, x, y, enemyNumber) {
+        var _this = _super.call(this, knightmareGame, game, layer, bulletSound, player, x, y, enemyNumber) || this;
+        _this.velocity = 32;
+        return _this;
     }
     return EnemyB;
 }(BaseEnemy));

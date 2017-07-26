@@ -47,4 +47,4 @@ var BaseEnemy = (function () {
     };
     return BaseEnemy;
 }());
-//# sourceMappingURL=baseenemy.js.map
+//# sourceMappingURL=baseEnemy.js.map

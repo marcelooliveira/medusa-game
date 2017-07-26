@@ -7,7 +7,13 @@ class EnemyA extends BaseEnemy {
     //}
 }
 
-class EnemyB extends BaseEnemy { }
+class EnemyB extends BaseEnemy {
+    constructor(knightmareGame: KnightmareGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
+        player: Player, x: number, y: number, enemyNumber: number) {
+            super(knightmareGame, game, layer, bulletSound, player, x, y, enemyNumber);
+            this.velocity = 32;
+    }
+}
 class EnemyC extends BaseEnemy { }
 class EnemyD extends BaseEnemy { }
 class EnemyE extends BaseEnemy { }
