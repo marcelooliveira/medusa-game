@@ -121,6 +121,7 @@
     <Content Include="assets\sprites\PlayerBulletSpriteSheet.png" />
     <Content Include="assets\sprites\PlayerDestructionSpriteSheet.png" />
     <Content Include="index.html" />
+    <TypeScriptCompile Include="enemies\enemy.ts" />
     <TypeScriptCompile Include="gamestates\splash.ts" />
     <TypeScriptCompile Include="gamestates\menu.ts" />
     <Content Include="phaser\phaser2.png" />
@@ -131,7 +132,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="gamestates\level.ts" />
-    <TypeScriptCompile Include="enemies\enemy.ts" />
+    <TypeScriptCompile Include="enemies\baseEnemy.ts" />
     <TypeScriptCompile Include="player\playerBullet.ts" />
     <TypeScriptCompile Include="phaser\p2.d.ts" />
     <TypeScriptCompile Include="phaser\phaser.d.ts" />

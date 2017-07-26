@@ -14,7 +14,7 @@ class Level1 extends Phaser.State {
     tileSprite: Phaser.TileSprite;
     player: Player;
     boss: Boss;
-    enemies: Enemy[];
+    enemies: BaseEnemy[];
     playerBullets: PlayerBullet[];
     cursors: Phaser.CursorKeys;
     levelMusic: Phaser.Sound;
@@ -147,6 +147,7 @@ class Level1 extends Phaser.State {
     }
 
     setupEnemies() {
+        var enemyFactory = new EnemyFactory(this, this.game, this.layer, this.bulletSound, this.player);
         this.enemies = [];
         var enemycodes = 'abcdefghijklmnop';
         var lines = this.readFile("/assets/maps/Map01.txt").split('\n');
@@ -156,7 +157,7 @@ class Level1 extends Phaser.State {
                 var char = line[x];
                 var indexOf = enemycodes.indexOf(char);
                 if (indexOf >= 0) {
-                    var enemy = new Enemy(this, this.game, this.layer, this.bulletSound, this.player, x * 32, y * 32, indexOf + 1);
+                    var enemy = enemyFactory.createEnemy(char, x * 32, y * 32, indexOf + 1);
                     //enemy.setup();
                     this.enemies.push(enemy);
                 }

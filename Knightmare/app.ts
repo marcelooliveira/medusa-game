@@ -33,6 +33,7 @@ class KnightmareGame {
         this.game.load.script('playerBullet', 'player/playerBullet.js');
         this.game.load.script('playerState', 'player/playerState.js');
         this.game.load.script('boss', 'enemies/boss.js');
+        this.game.load.script('baseEnemy', 'enemies/baseEnemy.js');
         this.game.load.script('enemy', 'enemies/enemy.js');
 
         this.game.load.image('level', 'assets/backgrounds/level01.jpg');

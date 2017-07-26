@@ -1,67 +1,62 @@
 ﻿/// <reference path="../app.ts" />
-class Enemy {
+/// <reference path="baseenemy.ts" />
+class EnemyA extends BaseEnemy {
+    //constructor(knightmareGame: KnightmareGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
+    //    player: Player, x: number, y: number, enemyNumber: number) {
+    //    super(knightmareGame, game, layer, bulletSound, player, x, y, enemyNumber);
+    //}
+}
+
+class EnemyB extends BaseEnemy { }
+class EnemyC extends BaseEnemy { }
+class EnemyD extends BaseEnemy { }
+class EnemyE extends BaseEnemy { }
+class EnemyF extends BaseEnemy { }
+class EnemyG extends BaseEnemy { }
+class EnemyH extends BaseEnemy { }
+class EnemyI extends BaseEnemy { }
+class EnemyJ extends BaseEnemy { }
+class EnemyK extends BaseEnemy { }
+class EnemyL extends BaseEnemy { }
+class EnemyM extends BaseEnemy { }
+class EnemyN extends BaseEnemy { }
+
+
+class EnemyFactory {
     knightmareGame: KnightmareGame;
     game: Phaser.Game;
     layer: Phaser.TilemapLayer;
     bulletSound: Phaser.Sound;
-    sprite: Phaser.Sprite;
     player: Player;
-    isWeaponLoaded: boolean;
-    velocity: number;
-    x: number;
-    y: number;
-    size: number;
-    enemyNumber: number;
-
-    constructor(
-        knightmareGame: KnightmareGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound,
-        player: Player, x: number, y: number, enemyNumber: number) {
+    constructor(knightmareGame: KnightmareGame, game: Phaser.Game, layer: Phaser.TilemapLayer, bulletSound: Phaser.Sound, player: Player) {
         this.knightmareGame = knightmareGame;
         this.game = game;
         this.layer = layer;
         this.bulletSound = bulletSound;
         this.player = player;
-        this.create();
-        this.x = x;
-        this.y = y;
-        this.size = 32;
-        this.enemyNumber = enemyNumber;
-        this.velocity = 16;
     }
-
-    create() {
-        this.isWeaponLoaded = true;
-    }
-
-    update() {
-        if (this.sprite !== undefined) {
-            if (this.sprite.inCamera) {
-                this.sprite.body.velocity.y = this.velocity;
-            }
-            this.game.physics.arcade.collide(this.sprite, this.player.sprite, function () {
-                this.knightmareGame.playerWasHit(this);
-                this.sprite.destroy();
-            }.bind(this));
+    createEnemy(code: string, x: number, y: number, enemyNumber: number): BaseEnemy {
+        switch (code) {
+            case 'a':
+                return new EnemyA(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'b':
+                return new EnemyB(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'c':
+                return new EnemyC(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'd':
+                return new EnemyD(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'e':
+                return new EnemyE(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'f':
+                return new EnemyF(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'g':
+                return new EnemyG(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'h':
+                return new EnemyH(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'i':
+                return new EnemyI(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
+            case 'j':
+                return new EnemyJ(this.knightmareGame, this.game, this.layer, this.bulletSound, this.player, x, y, enemyNumber);
         }
-    }
-
-    setup() {
-        this.sprite = this.game.add.sprite(this.x, this.y, 'enemy' + this.enemyNumber);
-        this.sprite.animations.add('run', [0, 1, 2, 3, 2, 1], 4, true);
-        this.sprite.animations.play('run');
-        this.game.physics.arcade.enable(this.sprite);
-        this.sprite.body.collideWorldBounds = true;
-        this.sprite.body.setSize(32, 32, 0, 0);
-    }
-
-    teardown() {
-        if (this.sprite !== undefined) {
-            this.sprite.animations.destroy();
-            this.sprite.destroy();
-        }
-    }
-
-    wasHit() {
-        //this.sprite.animations.play('hit', 10, false);
     }
 }
